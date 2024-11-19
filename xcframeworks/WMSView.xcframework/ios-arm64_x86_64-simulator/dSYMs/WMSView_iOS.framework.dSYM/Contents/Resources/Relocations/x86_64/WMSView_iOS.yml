@@ -1,0 +1,56 @@
+---
+triple:          'x86_64-apple-darwin'
+binary-path:     '/Users/parksh/Library/Developer/Xcode/DerivedData/WMSView-bmhgkowsdbubgpdldagxvudtznbc/Build/Intermediates.noindex/ArchiveIntermediates/WMSView iOS/InstallationBuildProductsLocation/Library/Frameworks/WMSView_iOS.framework/WMSView_iOS'
+relocations:
+  - { offset: 0x5AAD7, size: 0x8, addend: 0x0, symName: _WMSView_iOSVersionString, symObjAddr: 0x0, symBinAddr: 0x3860, symSize: 0x0 }
+  - { offset: 0x5AB0C, size: 0x8, addend: 0x0, symName: _WMSView_iOSVersionNumber, symObjAddr: 0x30, symBinAddr: 0x3890, symSize: 0x0 }
+  - { offset: 0x5AB49, size: 0x8, addend: 0x0, symName: '_$sSd11WMSView_iOSE8toDegreeSdvg', symObjAddr: 0x0, symBinAddr: 0x1EE0, symSize: 0x20 }
+  - { offset: 0x5AB61, size: 0x8, addend: 0x0, symName: '_$sSd11WMSView_iOSE8toDegreeSdvg', symObjAddr: 0x0, symBinAddr: 0x1EE0, symSize: 0x20 }
+  - { offset: 0x5AB90, size: 0x8, addend: 0x0, symName: '_$sSd11WMSView_iOSE8toRadianSdvg', symObjAddr: 0x20, symBinAddr: 0x1F00, symSize: 0x16 }
+  - { offset: 0x5ACB5, size: 0x8, addend: 0x0, symName: '_$sSo8NSBundleC11WMSView_iOSE0B0ABvgZ', symObjAddr: 0x0, symBinAddr: 0x1F20, symSize: 0x6E }
+  - { offset: 0x5AD32, size: 0x8, addend: 0x0, symName: '_$sSo8NSBundleC11WMSView_iOSE0B0ABvgZ', symObjAddr: 0x0, symBinAddr: 0x1F20, symSize: 0x6E }
+  - { offset: 0x5AE4A, size: 0x8, addend: 0x0, symName: '_$s11WMSView_iOS10ProjectionC4CodeO8rawValueAESgSS_tcfC', symObjAddr: 0x0, symBinAddr: 0x1F90, symSize: 0x70 }
+  - { offset: 0x5AE83, size: 0x8, addend: 0x0, symName: '_$s11WMSView_iOS10ProjectionC4CodeOSQAASQ2eeoiySbx_xtFZTW', symObjAddr: 0xF0, symBinAddr: 0x2080, symSize: 0x10 }
+  - { offset: 0x5AEB4, size: 0x8, addend: 0x0, symName: '_$ss2eeoiySbx_xtSYRzSQ8RawValueRpzlF11WMSView_iOS10ProjectionC4CodeO_TB5', symObjAddr: 0x100, symBinAddr: 0x2090, symSize: 0x90 }
+  - { offset: 0x5AF89, size: 0x8, addend: 0x0, symName: '_$s11WMSView_iOS10ProjectionC4CodeOSHAASH9hashValueSivgTW', symObjAddr: 0x190, symBinAddr: 0x2120, symSize: 0x70 }
+  - { offset: 0x5B024, size: 0x8, addend: 0x0, symName: '_$s11WMSView_iOS10ProjectionC4CodeOSHAASH4hash4intoys6HasherVz_tFTW', symObjAddr: 0x200, symBinAddr: 0x2190, symSize: 0x50 }
+  - { offset: 0x5B08B, size: 0x8, addend: 0x0, symName: '_$s11WMSView_iOS10ProjectionC4CodeOSHAASH13_rawHashValue4seedS2i_tFTW', symObjAddr: 0x250, symBinAddr: 0x21E0, symSize: 0x70 }
+  - { offset: 0x5B17C, size: 0x8, addend: 0x0, symName: ___swift_instantiateConcreteTypeFromMangledName, symObjAddr: 0x70, symBinAddr: 0x2000, symSize: 0x40 }
+  - { offset: 0x5B1EA, size: 0x8, addend: 0x0, symName: '_$s11WMSView_iOS10ProjectionC4CodeOSHAASQWb', symObjAddr: 0x350, symBinAddr: 0x22E0, symSize: 0x10 }
+  - { offset: 0x5B1FE, size: 0x8, addend: 0x0, symName: '_$s11WMSView_iOS10ProjectionC4CodeOAESQAAWl', symObjAddr: 0x360, symBinAddr: 0x22F0, symSize: 0x30 }
+  - { offset: 0x5B212, size: 0x8, addend: 0x0, symName: ___swift_memcpy1_1, symObjAddr: 0x390, symBinAddr: 0x2320, symSize: 0x10 }
+  - { offset: 0x5B226, size: 0x8, addend: 0x0, symName: ___swift_noop_void_return, symObjAddr: 0x3A0, symBinAddr: 0x2330, symSize: 0x10 }
+  - { offset: 0x5B23A, size: 0x8, addend: 0x0, symName: '_$s11WMSView_iOS10ProjectionC4CodeOwet', symObjAddr: 0x3B0, symBinAddr: 0x2340, symSize: 0x80 }
+  - { offset: 0x5B24E, size: 0x8, addend: 0x0, symName: '_$s11WMSView_iOS10ProjectionC4CodeOwst', symObjAddr: 0x430, symBinAddr: 0x23C0, symSize: 0xD0 }
+  - { offset: 0x5B262, size: 0x8, addend: 0x0, symName: '_$s11WMSView_iOS10ProjectionC4CodeOwug', symObjAddr: 0x500, symBinAddr: 0x2490, symSize: 0x10 }
+  - { offset: 0x5B276, size: 0x8, addend: 0x0, symName: '_$s11WMSView_iOS10ProjectionC4CodeOwup', symObjAddr: 0x510, symBinAddr: 0x24A0, symSize: 0x10 }
+  - { offset: 0x5B28A, size: 0x8, addend: 0x0, symName: '_$s11WMSView_iOS10ProjectionC4CodeOwui', symObjAddr: 0x520, symBinAddr: 0x24B0, symSize: 0x10 }
+  - { offset: 0x5B29E, size: 0x8, addend: 0x0, symName: '_$s11WMSView_iOS10ProjectionC4CodeOMa', symObjAddr: 0x530, symBinAddr: 0x24C0, symSize: 0x10 }
+  - { offset: 0x5B2B2, size: 0x8, addend: 0x0, symName: '_$s11WMSView_iOS10ProjectionCMa', symObjAddr: 0x540, symBinAddr: 0x24D0, symSize: 0x20 }
+  - { offset: 0x5B2CD, size: 0x8, addend: 0x0, symName: '_$s11WMSView_iOS10ProjectionC4CodeO8rawValueAESgSS_tcfC', symObjAddr: 0x0, symBinAddr: 0x1F90, symSize: 0x70 }
+  - { offset: 0x5B304, size: 0x8, addend: 0x0, symName: '_$s11WMSView_iOS10ProjectionC4CodeO8rawValueSSvg', symObjAddr: 0xB0, symBinAddr: 0x2040, symSize: 0x40 }
+  - { offset: 0x5B349, size: 0x8, addend: 0x0, symName: '_$s11WMSView_iOS10ProjectionC4CodeOSYAASY8rawValuexSg03RawF0Qz_tcfCTW', symObjAddr: 0x2C0, symBinAddr: 0x2250, symSize: 0x20 }
+  - { offset: 0x5B35D, size: 0x8, addend: 0x0, symName: '_$s11WMSView_iOS10ProjectionC4CodeOSYAASY8rawValue03RawF0QzvgTW', symObjAddr: 0x2E0, symBinAddr: 0x2270, symSize: 0x40 }
+  - { offset: 0x5B393, size: 0x8, addend: 0x0, symName: '_$s11WMSView_iOS10ProjectionCfd', symObjAddr: 0x320, symBinAddr: 0x22B0, symSize: 0x10 }
+  - { offset: 0x5B3B8, size: 0x8, addend: 0x0, symName: '_$s11WMSView_iOS10ProjectionCfD', symObjAddr: 0x330, symBinAddr: 0x22C0, symSize: 0x20 }
+  - { offset: 0x5B5A0, size: 0x8, addend: 0x0, symName: '_$s11WMSView_iOS9WMSConfigVwCP', symObjAddr: 0x130, symBinAddr: 0x25D0, symSize: 0x30 }
+  - { offset: 0x5B5B4, size: 0x8, addend: 0x0, symName: '_$s11WMSView_iOS9WMSConfigVwxx', symObjAddr: 0x160, symBinAddr: 0x2600, symSize: 0x10 }
+  - { offset: 0x5B5C8, size: 0x8, addend: 0x0, symName: '_$s11WMSView_iOS9WMSConfigVwcp', symObjAddr: 0x170, symBinAddr: 0x2610, symSize: 0x40 }
+  - { offset: 0x5B5DC, size: 0x8, addend: 0x0, symName: '_$s11WMSView_iOS9WMSConfigVwca', symObjAddr: 0x1B0, symBinAddr: 0x2650, symSize: 0x60 }
+  - { offset: 0x5B5F0, size: 0x8, addend: 0x0, symName: ___swift_memcpy48_8, symObjAddr: 0x210, symBinAddr: 0x26B0, symSize: 0x20 }
+  - { offset: 0x5B604, size: 0x8, addend: 0x0, symName: '_$s11WMSView_iOS9WMSConfigVwta', symObjAddr: 0x230, symBinAddr: 0x26D0, symSize: 0x50 }
+  - { offset: 0x5B618, size: 0x8, addend: 0x0, symName: '_$s11WMSView_iOS9WMSConfigVwet', symObjAddr: 0x280, symBinAddr: 0x2720, symSize: 0x40 }
+  - { offset: 0x5B62C, size: 0x8, addend: 0x0, symName: '_$s11WMSView_iOS9WMSConfigVwst', symObjAddr: 0x2C0, symBinAddr: 0x2760, symSize: 0x50 }
+  - { offset: 0x5B640, size: 0x8, addend: 0x0, symName: '_$s11WMSView_iOS9WMSConfigVMa', symObjAddr: 0x310, symBinAddr: 0x27B0, symSize: 0xA }
+  - { offset: 0x5B666, size: 0x8, addend: 0x0, symName: '_$s11WMSView_iOS9WMSConfigV7baseUrlSSvg', symObjAddr: 0x0, symBinAddr: 0x2510, symSize: 0x30 }
+  - { offset: 0x5B67A, size: 0x8, addend: 0x0, symName: '_$s11WMSView_iOS9WMSConfigV7minZoomSivg', symObjAddr: 0x30, symBinAddr: 0x2540, symSize: 0x10 }
+  - { offset: 0x5B68E, size: 0x8, addend: 0x0, symName: '_$s11WMSView_iOS9WMSConfigV7maxZoomSivg', symObjAddr: 0x40, symBinAddr: 0x2550, symSize: 0x10 }
+  - { offset: 0x5B6A2, size: 0x8, addend: 0x0, symName: '_$s11WMSView_iOS9WMSConfigV11initialZoomSivg', symObjAddr: 0x50, symBinAddr: 0x2560, symSize: 0x10 }
+  - { offset: 0x5B6B6, size: 0x8, addend: 0x0, symName: '_$s11WMSView_iOS9WMSConfigV8tileSizeSdvg', symObjAddr: 0x60, symBinAddr: 0x2570, symSize: 0x10 }
+  - { offset: 0x5B7B4, size: 0x8, addend: 0x0, symName: ___swift_memcpy16_8, symObjAddr: 0x0, symBinAddr: 0x27C0, symSize: 0x10 }
+  - { offset: 0x5B7CC, size: 0x8, addend: 0x0, symName: ___swift_memcpy16_8, symObjAddr: 0x0, symBinAddr: 0x27C0, symSize: 0x10 }
+  - { offset: 0x5B7E0, size: 0x8, addend: 0x0, symName: '_$s11WMSView_iOS10CoordinateVwet', symObjAddr: 0x20, symBinAddr: 0x27D0, symSize: 0x20 }
+  - { offset: 0x5B7F4, size: 0x8, addend: 0x0, symName: '_$s11WMSView_iOS10CoordinateVwst', symObjAddr: 0x40, symBinAddr: 0x27F0, symSize: 0x30 }
+  - { offset: 0x5B808, size: 0x8, addend: 0x0, symName: '_$s11WMSView_iOS10CoordinateVMa', symObjAddr: 0x70, symBinAddr: 0x2820, symSize: 0xA }
+  - { offset: 0x5B900, size: 0x8, addend: 0x0, symName: '_$s11WMSView_iOS19ResourceBundleClass33_0EF1B466AC91C710C4D322539EF16BD1LLCMa', symObjAddr: 0x20, symBinAddr: 0x2830, symSize: 0x14 }
+...

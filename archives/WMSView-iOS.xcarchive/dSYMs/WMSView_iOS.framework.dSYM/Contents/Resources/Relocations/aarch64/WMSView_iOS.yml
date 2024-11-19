@@ -1,0 +1,57 @@
+---
+triple:          'arm64-apple-darwin'
+binary-path:     '/Users/parksh/Library/Developer/Xcode/DerivedData/WMSView-bmhgkowsdbubgpdldagxvudtznbc/Build/Intermediates.noindex/ArchiveIntermediates/WMSView iOS/InstallationBuildProductsLocation/Library/Frameworks/WMSView_iOS.framework/WMSView_iOS'
+relocations:
+  - { offset: 0x58ECB, size: 0x8, addend: 0x0, symName: _WMSView_iOSVersionString, symObjAddr: 0x0, symBinAddr: 0x5830, symSize: 0x0 }
+  - { offset: 0x58F00, size: 0x8, addend: 0x0, symName: _WMSView_iOSVersionNumber, symObjAddr: 0x30, symBinAddr: 0x5860, symSize: 0x0 }
+  - { offset: 0x58F3D, size: 0x8, addend: 0x0, symName: '_$sSd11WMSView_iOSE8toDegreeSdvg', symObjAddr: 0x0, symBinAddr: 0x4000, symSize: 0x20 }
+  - { offset: 0x58F55, size: 0x8, addend: 0x0, symName: '_$sSd11WMSView_iOSE8toDegreeSdvg', symObjAddr: 0x0, symBinAddr: 0x4000, symSize: 0x20 }
+  - { offset: 0x58F84, size: 0x8, addend: 0x0, symName: '_$sSd11WMSView_iOSE8toRadianSdvg', symObjAddr: 0x20, symBinAddr: 0x4020, symSize: 0x20 }
+  - { offset: 0x590A9, size: 0x8, addend: 0x0, symName: '_$sSo8NSBundleC11WMSView_iOSE0B0ABvgZ', symObjAddr: 0x0, symBinAddr: 0x4040, symSize: 0x74 }
+  - { offset: 0x59126, size: 0x8, addend: 0x0, symName: '_$sSo8NSBundleC11WMSView_iOSE0B0ABvgZ', symObjAddr: 0x0, symBinAddr: 0x4040, symSize: 0x74 }
+  - { offset: 0x5923E, size: 0x8, addend: 0x0, symName: '_$s11WMSView_iOS10ProjectionC4CodeO8rawValueAESgSS_tcfC', symObjAddr: 0x0, symBinAddr: 0x40B4, symSize: 0x74 }
+  - { offset: 0x59277, size: 0x8, addend: 0x0, symName: '_$s11WMSView_iOS10ProjectionC4CodeOSQAASQ2eeoiySbx_xtFZTW', symObjAddr: 0xF4, symBinAddr: 0x41A8, symSize: 0xC }
+  - { offset: 0x592A8, size: 0x8, addend: 0x0, symName: '_$ss2eeoiySbx_xtSYRzSQ8RawValueRpzlF11WMSView_iOS10ProjectionC4CodeO_TB5', symObjAddr: 0x100, symBinAddr: 0x41B4, symSize: 0xA8 }
+  - { offset: 0x5937D, size: 0x8, addend: 0x0, symName: '_$s11WMSView_iOS10ProjectionC4CodeOSHAASH9hashValueSivgTW', symObjAddr: 0x1A8, symBinAddr: 0x425C, symSize: 0x84 }
+  - { offset: 0x59431, size: 0x8, addend: 0x0, symName: '_$s11WMSView_iOS10ProjectionC4CodeOSHAASH4hash4intoys6HasherVz_tFTW', symObjAddr: 0x22C, symBinAddr: 0x42E0, symSize: 0x60 }
+  - { offset: 0x594A3, size: 0x8, addend: 0x0, symName: '_$s11WMSView_iOS10ProjectionC4CodeOSHAASH13_rawHashValue4seedS2i_tFTW', symObjAddr: 0x28C, symBinAddr: 0x4340, symSize: 0x80 }
+  - { offset: 0x595AD, size: 0x8, addend: 0x0, symName: ___swift_instantiateConcreteTypeFromMangledName, symObjAddr: 0x74, symBinAddr: 0x4128, symSize: 0x40 }
+  - { offset: 0x5961B, size: 0x8, addend: 0x0, symName: '_$s11WMSView_iOS10ProjectionC4CodeOSHAASQWb', symObjAddr: 0x374, symBinAddr: 0x4428, symSize: 0x4 }
+  - { offset: 0x5962F, size: 0x8, addend: 0x0, symName: '_$s11WMSView_iOS10ProjectionC4CodeOAESQAAWl', symObjAddr: 0x378, symBinAddr: 0x442C, symSize: 0x44 }
+  - { offset: 0x59643, size: 0x8, addend: 0x0, symName: ___swift_memcpy1_1, symObjAddr: 0x3BC, symBinAddr: 0x4470, symSize: 0xC }
+  - { offset: 0x59657, size: 0x8, addend: 0x0, symName: ___swift_noop_void_return, symObjAddr: 0x3C8, symBinAddr: 0x447C, symSize: 0x4 }
+  - { offset: 0x5966B, size: 0x8, addend: 0x0, symName: '_$s11WMSView_iOS10ProjectionC4CodeOwet', symObjAddr: 0x3CC, symBinAddr: 0x4480, symSize: 0x90 }
+  - { offset: 0x5967F, size: 0x8, addend: 0x0, symName: '_$s11WMSView_iOS10ProjectionC4CodeOwst', symObjAddr: 0x45C, symBinAddr: 0x4510, symSize: 0xBC }
+  - { offset: 0x59693, size: 0x8, addend: 0x0, symName: '_$s11WMSView_iOS10ProjectionC4CodeOwug', symObjAddr: 0x518, symBinAddr: 0x45CC, symSize: 0x8 }
+  - { offset: 0x596A7, size: 0x8, addend: 0x0, symName: '_$s11WMSView_iOS10ProjectionC4CodeOwup', symObjAddr: 0x520, symBinAddr: 0x45D4, symSize: 0x4 }
+  - { offset: 0x596BB, size: 0x8, addend: 0x0, symName: '_$s11WMSView_iOS10ProjectionC4CodeOwui', symObjAddr: 0x524, symBinAddr: 0x45D8, symSize: 0xC }
+  - { offset: 0x596CF, size: 0x8, addend: 0x0, symName: '_$s11WMSView_iOS10ProjectionC4CodeOMa', symObjAddr: 0x530, symBinAddr: 0x45E4, symSize: 0x10 }
+  - { offset: 0x596E3, size: 0x8, addend: 0x0, symName: '_$s11WMSView_iOS10ProjectionCMa', symObjAddr: 0x540, symBinAddr: 0x45F4, symSize: 0x20 }
+  - { offset: 0x596FE, size: 0x8, addend: 0x0, symName: '_$s11WMSView_iOS10ProjectionC4CodeO8rawValueAESgSS_tcfC', symObjAddr: 0x0, symBinAddr: 0x40B4, symSize: 0x74 }
+  - { offset: 0x59735, size: 0x8, addend: 0x0, symName: '_$s11WMSView_iOS10ProjectionC4CodeO8rawValueSSvg', symObjAddr: 0xB4, symBinAddr: 0x4168, symSize: 0x40 }
+  - { offset: 0x5977E, size: 0x8, addend: 0x0, symName: '_$s11WMSView_iOS10ProjectionC4CodeOSYAASY8rawValuexSg03RawF0Qz_tcfCTW', symObjAddr: 0x30C, symBinAddr: 0x43C0, symSize: 0xC }
+  - { offset: 0x59792, size: 0x8, addend: 0x0, symName: '_$s11WMSView_iOS10ProjectionC4CodeOSYAASY8rawValue03RawF0QzvgTW', symObjAddr: 0x318, symBinAddr: 0x43CC, symSize: 0x44 }
+  - { offset: 0x597AA, size: 0x8, addend: 0x0, symName: '_$s11WMSView_iOS10ProjectionC4CodeOSYAASY8rawValue03RawF0QzvgTW', symObjAddr: 0x318, symBinAddr: 0x43CC, symSize: 0x44 }
+  - { offset: 0x597D3, size: 0x8, addend: 0x0, symName: '_$s11WMSView_iOS10ProjectionCfd', symObjAddr: 0x35C, symBinAddr: 0x4410, symSize: 0x8 }
+  - { offset: 0x597F8, size: 0x8, addend: 0x0, symName: '_$s11WMSView_iOS10ProjectionCfD', symObjAddr: 0x364, symBinAddr: 0x4418, symSize: 0x10 }
+  - { offset: 0x599E0, size: 0x8, addend: 0x0, symName: '_$s11WMSView_iOS9WMSConfigVwCP', symObjAddr: 0xC0, symBinAddr: 0x4694, symSize: 0x30 }
+  - { offset: 0x599F4, size: 0x8, addend: 0x0, symName: '_$s11WMSView_iOS9WMSConfigVwxx', symObjAddr: 0xF0, symBinAddr: 0x46C4, symSize: 0x8 }
+  - { offset: 0x59A08, size: 0x8, addend: 0x0, symName: '_$s11WMSView_iOS9WMSConfigVwcp', symObjAddr: 0xF8, symBinAddr: 0x46CC, symSize: 0x34 }
+  - { offset: 0x59A1C, size: 0x8, addend: 0x0, symName: '_$s11WMSView_iOS9WMSConfigVwca', symObjAddr: 0x12C, symBinAddr: 0x4700, symSize: 0x6C }
+  - { offset: 0x59A30, size: 0x8, addend: 0x0, symName: ___swift_memcpy48_8, symObjAddr: 0x198, symBinAddr: 0x476C, symSize: 0x14 }
+  - { offset: 0x59A44, size: 0x8, addend: 0x0, symName: '_$s11WMSView_iOS9WMSConfigVwta', symObjAddr: 0x1AC, symBinAddr: 0x4780, symSize: 0x4C }
+  - { offset: 0x59A58, size: 0x8, addend: 0x0, symName: '_$s11WMSView_iOS9WMSConfigVwet', symObjAddr: 0x1F8, symBinAddr: 0x47CC, symSize: 0x48 }
+  - { offset: 0x59A6C, size: 0x8, addend: 0x0, symName: '_$s11WMSView_iOS9WMSConfigVwst', symObjAddr: 0x240, symBinAddr: 0x4814, symSize: 0x4C }
+  - { offset: 0x59A80, size: 0x8, addend: 0x0, symName: '_$s11WMSView_iOS9WMSConfigVMa', symObjAddr: 0x28C, symBinAddr: 0x4860, symSize: 0x10 }
+  - { offset: 0x59AA6, size: 0x8, addend: 0x0, symName: '_$s11WMSView_iOS9WMSConfigV7baseUrlSSvg', symObjAddr: 0x0, symBinAddr: 0x4620, symSize: 0x2C }
+  - { offset: 0x59ABA, size: 0x8, addend: 0x0, symName: '_$s11WMSView_iOS9WMSConfigV7minZoomSivg', symObjAddr: 0x2C, symBinAddr: 0x464C, symSize: 0x8 }
+  - { offset: 0x59ACE, size: 0x8, addend: 0x0, symName: '_$s11WMSView_iOS9WMSConfigV7maxZoomSivg', symObjAddr: 0x34, symBinAddr: 0x4654, symSize: 0x8 }
+  - { offset: 0x59AE2, size: 0x8, addend: 0x0, symName: '_$s11WMSView_iOS9WMSConfigV11initialZoomSivg', symObjAddr: 0x3C, symBinAddr: 0x465C, symSize: 0x8 }
+  - { offset: 0x59AF6, size: 0x8, addend: 0x0, symName: '_$s11WMSView_iOS9WMSConfigV8tileSizeSdvg', symObjAddr: 0x44, symBinAddr: 0x4664, symSize: 0x8 }
+  - { offset: 0x59BF4, size: 0x8, addend: 0x0, symName: ___swift_memcpy16_8, symObjAddr: 0x0, symBinAddr: 0x4870, symSize: 0xC }
+  - { offset: 0x59C0C, size: 0x8, addend: 0x0, symName: ___swift_memcpy16_8, symObjAddr: 0x0, symBinAddr: 0x4870, symSize: 0xC }
+  - { offset: 0x59C20, size: 0x8, addend: 0x0, symName: '_$s11WMSView_iOS10CoordinateVwet', symObjAddr: 0x10, symBinAddr: 0x487C, symSize: 0x20 }
+  - { offset: 0x59C34, size: 0x8, addend: 0x0, symName: '_$s11WMSView_iOS10CoordinateVwst', symObjAddr: 0x30, symBinAddr: 0x489C, symSize: 0x28 }
+  - { offset: 0x59C48, size: 0x8, addend: 0x0, symName: '_$s11WMSView_iOS10CoordinateVMa', symObjAddr: 0x58, symBinAddr: 0x48C4, symSize: 0x10 }
+  - { offset: 0x59D40, size: 0x8, addend: 0x0, symName: '_$s11WMSView_iOS19ResourceBundleClass33_0EF1B466AC91C710C4D322539EF16BD1LLCMa', symObjAddr: 0x10, symBinAddr: 0x48D4, symSize: 0x20 }
+...
