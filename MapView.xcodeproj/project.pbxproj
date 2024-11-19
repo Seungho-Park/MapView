@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		617D45F02CEC4E370064D298 /* TileCoordinate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 617D45EF2CEC4E340064D298 /* TileCoordinate.swift */; };
+		617D45F22CEC52B70064D298 /* ImageTile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 617D45F12CEC52B30064D298 /* ImageTile.swift */; };
 		61D8C7042CEC3E35004622F7 /* SourceTile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61D8C7032CEC3E33004622F7 /* SourceTile.swift */; };
 		61D8C7072CEC3F0D004622F7 /* MapExtent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61D8C7062CEC3F0A004622F7 /* MapExtent.swift */; };
 		61D8C70B2CEC4201004622F7 /* TileCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61D8C70A2CEC41FF004622F7 /* TileCache.swift */; };
@@ -34,6 +36,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		617D45EF2CEC4E340064D298 /* TileCoordinate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TileCoordinate.swift; sourceTree = "<group>"; };
+		617D45F12CEC52B30064D298 /* ImageTile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageTile.swift; sourceTree = "<group>"; };
 		61D8C7032CEC3E33004622F7 /* SourceTile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourceTile.swift; sourceTree = "<group>"; };
 		61D8C7062CEC3F0A004622F7 /* MapExtent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapExtent.swift; sourceTree = "<group>"; };
 		61D8C70A2CEC41FF004622F7 /* TileCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TileCache.swift; sourceTree = "<group>"; };
@@ -91,6 +95,8 @@
 		61D8C7052CEC3EF8004622F7 /* Tile */ = {
 			isa = PBXGroup;
 			children = (
+				617D45F12CEC52B30064D298 /* ImageTile.swift */,
+				617D45EF2CEC4E340064D298 /* TileCoordinate.swift */,
 				61D8C7132CEC4298004622F7 /* Tile.swift */,
 			);
 			path = Tile;
@@ -306,8 +312,10 @@
 				61D8C7142CEC4298004622F7 /* Tile.swift in Sources */,
 				61D8C7042CEC3E35004622F7 /* SourceTile.swift in Sources */,
 				61DA3D262CEB006800D15C2E /* Bundle+Extensions.swift in Sources */,
+				617D45F02CEC4E370064D298 /* TileCoordinate.swift in Sources */,
 				61DA3D792CEB13F100D15C2E /* Projection.swift in Sources */,
 				61D8C7102CEC422B004622F7 /* MapCache.swift in Sources */,
+				617D45F22CEC52B70064D298 /* ImageTile.swift in Sources */,
 				61DA3D2F2CEB0C4B00D15C2E /* Dictionary+Extensions.swift in Sources */,
 				61DA3D762CEB11B100D15C2E /* MapConfig.swift in Sources */,
 				61DA3D7B2CEB14E200D15C2E /* Coordinate.swift in Sources */,
