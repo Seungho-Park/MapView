@@ -22,16 +22,17 @@ public final class ImageTile: Tile {
         self.tileData = tileData
     }
     
-    public func load() {
+    public func load()-> Bool {
         guard let url = URL(string: url),
               let data = try? Data(contentsOf: url)
         else {
             tileState = .error
             tileData = nil
-            return
+            return false
         }
         
         tileState = .loaded
         tileData = data
+        return true
     }
 }

@@ -16,7 +16,7 @@ public protocol Tile {
     var coordinate: TileCoordinate { get }
     var url: String { get }
     var tileState: TileState { get set }
-    var tileData: TileData? { get }
+    var tileData: TileData? { get set }
     
-    func load()
+    func load()-> Bool
 }

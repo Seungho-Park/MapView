@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		61113A2B2CF0703000056FAF /* MapRequester.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61113A2A2CF0702900056FAF /* MapRequester.swift */; };
+		61113A2D2CF0715100056FAF /* WMSRequester.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61113A2C2CF0714E00056FAF /* WMSRequester.swift */; };
+		61113A2F2CF0737A00056FAF /* MapRequesterPool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61113A2E2CF0737800056FAF /* MapRequesterPool.swift */; };
+		61113A322CF0749E00056FAF /* WMSRequesterPool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61113A312CF0749B00056FAF /* WMSRequesterPool.swift */; };
 		617D45F02CEC4E370064D298 /* TileCoordinate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 617D45EF2CEC4E340064D298 /* TileCoordinate.swift */; };
 		617D45F22CEC52B70064D298 /* ImageTile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 617D45F12CEC52B30064D298 /* ImageTile.swift */; };
 		61D8C7042CEC3E35004622F7 /* SourceTile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61D8C7032CEC3E33004622F7 /* SourceTile.swift */; };
@@ -36,6 +40,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		61113A2A2CF0702900056FAF /* MapRequester.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapRequester.swift; sourceTree = "<group>"; };
+		61113A2C2CF0714E00056FAF /* WMSRequester.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WMSRequester.swift; sourceTree = "<group>"; };
+		61113A2E2CF0737800056FAF /* MapRequesterPool.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapRequesterPool.swift; sourceTree = "<group>"; };
+		61113A312CF0749B00056FAF /* WMSRequesterPool.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WMSRequesterPool.swift; sourceTree = "<group>"; };
 		617D45EF2CEC4E340064D298 /* TileCoordinate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TileCoordinate.swift; sourceTree = "<group>"; };
 		617D45F12CEC52B30064D298 /* ImageTile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageTile.swift; sourceTree = "<group>"; };
 		61D8C7032CEC3E33004622F7 /* SourceTile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourceTile.swift; sourceTree = "<group>"; };
@@ -84,6 +92,25 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		61113A292CF0702000056FAF /* Requester */ = {
+			isa = PBXGroup;
+			children = (
+				61113A302CF0749400056FAF /* Pool */,
+				61113A2C2CF0714E00056FAF /* WMSRequester.swift */,
+				61113A2A2CF0702900056FAF /* MapRequester.swift */,
+			);
+			path = Requester;
+			sourceTree = "<group>";
+		};
+		61113A302CF0749400056FAF /* Pool */ = {
+			isa = PBXGroup;
+			children = (
+				61113A312CF0749B00056FAF /* WMSRequesterPool.swift */,
+				61113A2E2CF0737800056FAF /* MapRequesterPool.swift */,
+			);
+			path = Pool;
+			sourceTree = "<group>";
+		};
 		61D8C7022CEC3E2E004622F7 /* Source */ = {
 			isa = PBXGroup;
 			children = (
@@ -167,6 +194,7 @@
 				61D8C7052CEC3EF8004622F7 /* Tile */,
 				61DA3D772CEB124600D15C2E /* Projection */,
 				61D8C7022CEC3E2E004622F7 /* Source */,
+				61113A292CF0702000056FAF /* Requester */,
 				61D8C7062CEC3F0A004622F7 /* MapExtent.swift */,
 				61DA3D7A2CEB14E100D15C2E /* Coordinate.swift */,
 				61DA3D752CEB11AC00D15C2E /* MapConfig.swift */,
@@ -310,15 +338,19 @@
 				61DA3D2D2CEB0BF900D15C2E /* Double+Extensions.swift in Sources */,
 				61D8C70B2CEC4201004622F7 /* TileCache.swift in Sources */,
 				61D8C7142CEC4298004622F7 /* Tile.swift in Sources */,
+				61113A2D2CF0715100056FAF /* WMSRequester.swift in Sources */,
 				61D8C7042CEC3E35004622F7 /* SourceTile.swift in Sources */,
 				61DA3D262CEB006800D15C2E /* Bundle+Extensions.swift in Sources */,
 				617D45F02CEC4E370064D298 /* TileCoordinate.swift in Sources */,
 				61DA3D792CEB13F100D15C2E /* Projection.swift in Sources */,
 				61D8C7102CEC422B004622F7 /* MapCache.swift in Sources */,
 				617D45F22CEC52B70064D298 /* ImageTile.swift in Sources */,
+				61113A2F2CF0737A00056FAF /* MapRequesterPool.swift in Sources */,
+				61113A2B2CF0703000056FAF /* MapRequester.swift in Sources */,
 				61DA3D2F2CEB0C4B00D15C2E /* Dictionary+Extensions.swift in Sources */,
 				61DA3D762CEB11B100D15C2E /* MapConfig.swift in Sources */,
 				61DA3D7B2CEB14E200D15C2E /* Coordinate.swift in Sources */,
+				61113A322CF0749E00056FAF /* WMSRequesterPool.swift in Sources */,
 				61D8C7122CEC4252004622F7 /* CacheWrapper.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
