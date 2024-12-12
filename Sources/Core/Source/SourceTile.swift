@@ -31,9 +31,13 @@ open class SourceTile {
         self.projection = EPSG3857()
     }
     
-    public func getZForResolution(resolution: Double, direction: Int)-> Int? {
-        guard let z = resolutions.findNearest(value: resolution, direction: direction) else { return nil }
-        return z.clamp(config.minZoom, config.maxZoom)
+    func createTile(tileCoordinate: TileCoordinate)-> (any Tile)? {
+        guard let tileCoord = wrapX(tileCoord: tileCoordinate) else {
+            return nil
+        }
+        
+        
+        return nil
     }
 }
 
@@ -44,5 +48,41 @@ public extension SourceTile {
     
     var origin: Coordinate {
         return extent.get(config.corner)
+    }
+    
+    func getZForResolution(resolution: Double, direction: Int)-> Int? {
+        guard let z = resolutions.findNearest(value: resolution, direction: direction) else { return nil }
+        return z.clamp(config.minZoom, config.maxZoom)
+    }
+    
+    private func getTileCoordForXYAndResolution(lon: Double, lat: Double, resolution: Double, reverseIntersectionPolicy: Bool)-> TileCoordinate? {
+        guard let index = getIndexForResolution(resolution: resolution, direction: 0),
+              let resolutionScale = resolutions.get(index) else {
+            return nil
+        }
+        
+        return nil
+    }
+    
+    private func getIndexForResolution(resolution: Double, direction: Int)-> Int? {
+        guard let index = resolutions.findNearest(value: resolution, direction: direction) else { return nil }
+        return index.clamp(config.minZoom, config.maxZoom)
+    }
+    
+    private func wrapX(tileCoord: TileCoordinate)-> TileCoordinate? {
+        
+        return tileCoord
+    }
+    
+    private func withInExtendAndZ(tileCoord: TileCoordinate) -> Bool {
+        if config.minZoom > tileCoord.z || tileCoord.z > config.maxZoom {
+            return false
+        }
+        
+        return false
+    }
+    
+    private func getTileRangeForExtentAndZ(extent: MapExtent, z: Int) {
+        guard let resolution = resolutions.get(z) else { return }
     }
 }
