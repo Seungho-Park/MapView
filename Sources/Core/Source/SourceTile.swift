@@ -7,39 +7,31 @@
 
 import Foundation
 
-open class SourceTile {
-    private lazy var resolutions: ResolutionArray = {
-        let extent = projection.tileExtent
-        let maxResolution = max(extent.width / config.tileSize, extent.height / config.tileSize)
-        
-        let length = config.maxZoom + 1
-        
-        let resolutions = ResolutionArray()
-        for i in 0..<length {
-            resolutions.add(maxResolution / pow(2, Double(i)))
-        }
-        
-        resolutions.sort()
-        return resolutions
-    }()
+public protocol SourceTile {
+//    private lazy var resolutions: ResolutionArray = {
+//        let extent = projection.tileExtent
+//        let maxResolution = max(extent.width / config.tileSize, extent.height / config.tileSize)
+//        
+//        let length = config.maxZoom + 1
+//        
+//        let resolutions = ResolutionArray()
+//        for i in 0..<length {
+//            resolutions.add(maxResolution / pow(2, Double(i)))
+//        }
+//        
+//        resolutions.sort()
+//        return resolutions
+//    }()
     
-    internal let projection: Projection
-    internal let config: MapConfigurable
+    var projection: Projection { get }
+    var resolutions: ResolutionArray { get }
+    var config: MapConfigurable { get }
     
-    init(config: MapConfigurable) {
-        self.config = config
-        self.projection = EPSG3857()
-    }
-    
-    func createTile(tileCoordinate: TileCoordinate)-> (any Tile)? {
-        let coord = wrapX(tileCoord: tileCoordinate)
-        
-        if withInExtendAndZ(tileCoord: coord) {
-            
-        }
-        
-        return nil
-    }
+    func getKey(_ coord: TileCoordinate)-> String
+    func createTile(tileCoord: TileCoordinate, pixelRatio: Double)-> (any Tile)?
+    func getTile(_ z: Int, _ x: Int, _ y: Int, _ pixelRatio: Double)-> (any Tile)?
+    func updateTile(forKey tileKey: String)-> (any Tile)?
+    func clear()
 }
 
 public extension SourceTile {
@@ -61,7 +53,7 @@ public extension SourceTile {
         return index.clamp(config.minZoom, config.maxZoom)
     }
     
-    private func wrapX(tileCoord: TileCoordinate)-> TileCoordinate {
+    internal func wrapX(tileCoord: TileCoordinate)-> TileCoordinate {
         guard var center = getCenterForTileCoordinate(tileCoord: tileCoord),
               !extent.contains(center),
               let resolution = resolutions.get(tileCoord.z)
@@ -86,7 +78,7 @@ public extension SourceTile {
         )
     }
     
-    private func withInExtendAndZ(tileCoord: TileCoordinate) -> Bool {
+    internal func withInExtendAndZ(tileCoord: TileCoordinate) -> Bool {
         if config.minZoom > tileCoord.z || tileCoord.z > config.maxZoom {
             return false
         }

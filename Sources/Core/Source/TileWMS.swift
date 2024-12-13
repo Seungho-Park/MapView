@@ -8,5 +8,79 @@
 import Foundation
 
 final public class TileWMS: SourceTile {
+    public lazy var resolutions: ResolutionArray = {
+        let extent = projection.tileExtent
+        let maxResolution = max(extent.width / config.tileSize, extent.height / config.tileSize)
+        
+        let length = config.maxZoom + 1
+        
+        let resolutions = ResolutionArray()
+        for i in 0..<length {
+            resolutions.add(maxResolution / pow(2, Double(i)))
+        }
+        
+        resolutions.sort()
+        return resolutions
+    }()
+    public var config: any MapConfigurable
+    public var projection: any Projection
     
+    private let tileCache: TileCache = .init(capacity: 30)
+    private var buffer: [String: any Tile] = [:]
+    
+    init(config: any MapConfigurable, projection: any Projection) {
+        self.config = config
+        self.projection = projection
+    }
+    
+    
+    public func getKey(_ coord: TileCoordinate) -> String {
+        return "\(config.baseUrl)/\(coord.z)/\(coord.x)/\(coord.y)"
+    }
+    
+    public func createTile(tileCoord: TileCoordinate, pixelRatio: Double) -> (any Tile)? {
+        let tileCoord = wrapX(tileCoord: tileCoord)
+        
+        if withInExtendAndZ(tileCoord: tileCoord) {
+            let tile = ImageTile(key: getKey(tileCoord), coordinate: tileCoord, url: "\(config.baseUrl)/")
+            
+            return tile
+        }
+        return nil
+    }
+    
+    public func getTile(_ z: Int, _ x: Int, _ y: Int, _ pixelRatio: Double) -> (any Tile)? {
+        let coord = TileCoordinate(z: z, x: x, y: y)
+        let key = getKey(coord)
+        
+        if let tile = tileCache.get(forKey: key) {
+            return tile
+        }
+        
+        if let tile = buffer[key] {
+            return tile
+        }
+        
+        if let tile = createTile(tileCoord: coord, pixelRatio: pixelRatio) {
+            buffer.updateValue(tile, forKey: key)
+            return tile
+        }
+        
+        return nil
+    }
+    
+    public func updateTile(forKey tileKey: String) -> (any Tile)? {
+        if let tile = buffer.removeValue(forKey: tileKey) {
+            tileCache.update(tile, forKey: tileKey)
+            
+            return tile
+        }
+        
+        return nil
+    }
+    
+    public func clear() {
+        tileCache.clear()
+        buffer.removeAll()
+    }
 }

@@ -14,7 +14,7 @@ public final class ImageTile: Tile {
     public var tileState: TileState
     public var tileData: Data?
     
-    public init(key: String, coordinate: TileCoordinate, url: String, tileState: TileState, tileData: Data? = nil) {
+    public init(key: String, coordinate: TileCoordinate, url: String, tileState: TileState = .idle, tileData: Data? = nil) {
         self.key = key
         self.coordinate = coordinate
         self.url = url
