@@ -51,18 +51,18 @@ final public class TileWMS: SourceTile {
     
     public func getTile(_ z: Int, _ x: Int, _ y: Int, _ pixelRatio: Double) -> (any Tile)? {
         let coord = TileCoordinate(z: z, x: x, y: y)
-        let key = getKey(coord)
+        let tileKey = getKey(coord)
         
-        if let tile = tileCache.get(forKey: key) {
+        if let tile = tileCache.get(forKey: tileKey) {
             return tile
         }
         
-        if let tile = buffer[key] {
+        if let tile = buffer[tileKey] {
             return tile
         }
         
         if let tile = createTile(tileCoord: coord, pixelRatio: pixelRatio) {
-            buffer.updateValue(tile, forKey: key)
+            buffer.updateValue(tile, forKey: tileKey)
             return tile
         }
         
