@@ -89,7 +89,7 @@ public extension SourceTile {
         return tileRange?.contains(tileCoord.x, tileCoord.y) ?? false
     }
     
-    private func getTileRangeForExtentAndZ(extent: MapExtent, z: Int)-> TileRange? {
+    internal func getTileRangeForExtentAndZ(extent: MapExtent, z: Int)-> TileRange? {
         guard let resolution = resolutions.get(z) else { return nil }
         return getTileRangeForExtentAndResolution(extent: extent, resolution: resolution)
     }
@@ -134,5 +134,20 @@ public extension SourceTile {
         let minLatitude = origin.latitude + (Double(tileCoord.y) * config.tileSize * resolution)
         
         return .init(minLongitude: minLongitude, minLatitude: minLatitude, maxLongitude: minLongitude + (config.tileSize * resolution), maxLatitude: minLatitude + (config.tileSize * resolution))
+    }
+    
+    internal func getResolution(_ z: Int)-> Double? {
+        return resolutions.get(z)
+    }
+    
+    internal func getExtentForTileRange(z: Int, tileRange: TileRange)-> MapExtent? {
+        guard let resolution = resolutions.get(z) else { return nil }
+        
+        return MapExtent(
+            minLongitude: origin.longitude + Double(tileRange.minX) * config.tileSize * resolution,
+            minLatitude: origin.latitude + Double(tileRange.minY) * config.tileSize * resolution,
+            maxLongitude: origin.longitude + Double(tileRange.maxX + 1) * config.tileSize * resolution,
+            maxLatitude: origin.latitude + Double(tileRange.maxY + 1) * config.tileSize * resolution
+        )
     }
 }

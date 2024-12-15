@@ -28,7 +28,7 @@ final public class TileWMS: SourceTile {
     private let tileCache: TileCache = .init(capacity: 30)
     private var buffer: [String: any Tile] = [:]
     
-    init(config: any MapConfigurable, projection: any Projection) {
+    init(config: any MapConfigurable, projection: any Projection = EPSG3857()) {
         self.config = config
         self.projection = projection
     }
@@ -42,7 +42,7 @@ final public class TileWMS: SourceTile {
         let tileCoord = wrapX(tileCoord: tileCoord)
         
         if withInExtendAndZ(tileCoord: tileCoord) {
-            let tile = ImageTile(key: getKey(tileCoord), coordinate: tileCoord, url: "\(config.baseUrl)/\(getFixedTileURL(tileCoord, pixelRatio: pixelRatio))")
+            let tile = ImageTile(key: getKey(tileCoord), coordinate: tileCoord, url: "\(getFixedTileURL(tileCoord, pixelRatio: pixelRatio))")
             
             return tile
         }
@@ -86,7 +86,7 @@ final public class TileWMS: SourceTile {
     
     public func getFixedTileURL(_ coord: TileCoordinate, pixelRatio: Double) -> String {
         guard let tileExtent = getTileCoordExtent(coord) else { return "" }
-        return getRequestParameters(coord, tileExtent)
+        return "\(config.baseUrl)?\(getRequestParameters(coord, tileExtent))"
     }
     
     private func getRequestParameters(_ coord: TileCoordinate, _ extent: MapExtent)-> String {

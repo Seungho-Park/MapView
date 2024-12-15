@@ -6,7 +6,8 @@ import PackageDescription
 let pacakge = Package(
     name: "WMSView",
     platforms: [
-        .iOS(.v14)
+        .iOS(.v14),
+        .macOS(.v10_13)
     ],
     products: [
         .library(
