@@ -62,15 +62,16 @@ open class MapView: UIView {
     open override func draw(_ rect: CGRect) {
         super.draw(rect)
         
-        canvasLayer.frame = rect
-        mapLayer.frame = canvasLayer.frame
+        print("\(#function): \(rect)")
         
         apply()
         renderFrame()
+        
+        mapLayer.render()
     }
     
-    public override func layoutSubviews() {
-        super.layoutSubviews()
+    open override func layoutSublayers(of layer: CALayer) {
+        super.layoutSublayers(of: layer)
         
         var viewRect: CGRect = canvasLayer.frame
         
@@ -99,11 +100,11 @@ open class MapView: UIView {
             canvasLayer.setAffineTransform(.init(scaleX: scaleRate, y: scaleRate))
             CATransaction.commit()
         case .none:
-            mapLayer.render()
+            setNeedsDisplay()
             CATransaction.begin()
             CATransaction.setDisableActions(true)
             canvasLayer.setAffineTransform(.identity)
-            canvasLayer.frame = self.bounds
+            canvasLayer.frame = layer.frame
             CATransaction.commit()
         }
     }
@@ -137,7 +138,7 @@ open class MapView: UIView {
             renderFrame()
         }
         
-        setNeedsLayout()
+        self.layer.setNeedsLayout()
     }
     
     func zoomOut() {
@@ -148,7 +149,7 @@ open class MapView: UIView {
             renderFrame()
         }
         
-        setNeedsLayout()
+        self.layer.setNeedsLayout()
     }
     
     private func apply() {
@@ -244,7 +245,7 @@ public extension MapView {
                 let yLen = newMovePoint.y - downPoint!.y
                 
                 if sqrt(pow(xLen, 2) + pow(yLen, 2)) > 5 {
-                    self.setNeedsLayout()
+                    self.layer.setNeedsLayout()
                 }
             }
         case .zoom(let startDistance, _):
@@ -253,7 +254,7 @@ public extension MapView {
             let y = touches[0].y - touches[1].y
             
             mapState = .zoom(startDistance, sqrt(x*x + y*y))
-            setNeedsLayout()
+            self.layer.setNeedsLayout()
         }
     }
     
@@ -281,13 +282,13 @@ public extension MapView {
             
             self.centerCoord = pixelToWorld(point: centerXY)
             renderFrame()
-            setNeedsLayout()
+            self.layer.setNeedsLayout()
         case .zoom(let startDistance, let moveDistance):
             let scaleRate: Double
             if touches.count < 2 {
                 guard let start = startDistance, let move = moveDistance else {
                     mapState = .none
-                    setNeedsLayout()
+                    self.layer.setNeedsLayout()
                     return
                 }
                 
@@ -311,14 +312,14 @@ public extension MapView {
     
     override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
         mapState = .none
-        setNeedsLayout()
+        self.layer.setNeedsLayout()
     }
 }
 
 extension MapView: TileLayerDelegate {
     public func refreshLayer() {
         DispatchQueue.main.async {
-            self.setNeedsLayout()
+            self.setNeedsDisplay()
         }
     }
 }
