@@ -33,7 +33,6 @@ final public class TileWMS: SourceTile {
         self.projection = projection
     }
     
-    
     public func getKey(_ coord: TileCoordinate) -> String {
         return "\(config.baseUrl)/\(coord.z)/\(coord.x)/\(coord.y)"
     }
@@ -93,17 +92,21 @@ final public class TileWMS: SourceTile {
         var parameters = config.parameters
         parameters.updateValue(config.serviceType, forKey: "SERVICE")
         parameters.updateValue(config.version, forKey: "VERSION")
-        parameters.updateValue(config.tileSize, forKey: "WIDTH")
-        parameters.updateValue(config.tileSize, forKey: "HEIGHT")
+        parameters.updateValue(String(format: "%.0f", config.tileSize), forKey: "WIDTH")
+        parameters.updateValue(String(format: "%.0f", config.tileSize), forKey: "HEIGHT")
         parameters.updateValue(config.requestType, forKey: "REQUEST")
         parameters.updateValue(config.format, forKey: "FORMAT")
         parameters.updateValue(projection.type.rawValue, forKey: "CRS")
         
         switch projection.type {
         case .epsg3857:
-            parameters.updateValue("\(extent.minLongitude),\(extent.minLatitude),\(extent.maxLongitude),\(extent.maxLatitude)", forKey: "BBOX")
-        case .epsg4326:
             parameters.updateValue("\(extent.minLatitude),\(extent.minLongitude),\(extent.maxLatitude),\(extent.maxLongitude)", forKey: "BBOX")
+        case .epsg4326:
+            let minCoord = projection.convert(coord: .init(latitude: extent.minLatitude, longitude: extent.minLongitude), to: .epsg4326)
+            let maxCoord = projection.convert(coord: .init(latitude: extent.maxLatitude, longitude: extent.maxLongitude), to: .epsg4326)
+            
+            parameters.updateValue("\(minCoord.latitude),\(minCoord.longitude),\(maxCoord.latitude),\(maxCoord.longitude)", forKey: "BBOX")
+            
         }
         
         return parameters.urlQueryParameters

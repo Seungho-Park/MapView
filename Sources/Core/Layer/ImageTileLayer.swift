@@ -12,20 +12,20 @@ import UIKit
 import AppKit
 #endif
 
-public class ImageTileLayer: TileLayer {
+public class ImageTileLayer: CALayer, TileLayer {
     private var requesters: [any MapRequester] = []
     private var renderingTiles: [(CGImage, CGRect)] = []
     private var resolution: Double = 0
     
     public let source: any SourceTile
     public var screenExtent: MapExtent!
-    public var transform: Transform = .init()
+    public var tileTransform: Transform = .init()
     public var size: CGSize = .zero
-    public weak var delegate: TileLayerDelegate?
+    public weak var mapDelegate: TileLayerDelegate?
     
     public init(source: any SourceTile) {
         self.source = source
-        
+        super.init()
         for _ in 0..<6 {
             let requester = WMSRequester()
             requester.start(completion: notifyTile(_:))
@@ -33,10 +33,14 @@ public class ImageTileLayer: TileLayer {
         }
     }
     
-    public func render(completion: @escaping CompletionHandler) {
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    public func render() {
         let layerRect = CGRect(
-            origin: .init(x: transform.get(4), y: transform.get(5)),
-            size: .init(width: size.width * transform.get(0), height: size.height * transform.get(3))
+            origin: .init(x: tileTransform.get(4), y: tileTransform.get(5)),
+            size: .init(width: size.width * tileTransform.get(0), height: size.height * tileTransform.get(3))
         )
         
         let format = UIGraphicsImageRendererFormat()
@@ -52,8 +56,11 @@ public class ImageTileLayer: TileLayer {
                 }
             }
         }
-        
-        completion(.success(renderedImage.cgImage))
+        CATransaction.begin()
+        CATransaction.setDisableActions(true)
+        self.frame = layerRect
+        self.contents = renderedImage.cgImage
+        CATransaction.commit()
     }
     
     public func prepareFrame(screenSize: CGSize, center: Coordinate, resolution: Double, angle: Double, extent: MapExtent) {
@@ -95,7 +102,7 @@ public class ImageTileLayer: TileLayer {
         }
         
         drawTiles(tiles)
-        delegate?.refreshLayer()
+        mapDelegate?.refreshLayer()
     }
     
     private func drawTiles(_ tiles: [ImageTile], overSampling: Double = 1.0) {

@@ -35,53 +35,58 @@ public final class ResolutionArray {
     }
     
     func findNearest(value: Double, direction: Int, isDescending: Bool = false) -> Int? {
-        guard !list.isEmpty else { return nil }
+        var compValue = 0
         
-        var low = 0
-        var high = list.count - 1
-        
-        while low <= high {
-            let mid = (low + high) / 2
-            
-            if list[mid] == value {
-                return mid
-            }
-            
-            if isDescending {
-                if list[mid] > value {
-                    low = mid + 1
-                } else {
-                    high = mid - 1
-                }
-            } else {
-                if list[mid] < value {
-                    low = mid + 1
-                } else {
-                    high = mid - 1
+        if list.count > 0{
+            if list[0] <= value{
+                return 0
+            }else if list[list.count-1] >= value{
+                return list.count-1
+            }else{
+                if direction > 0{
+                    for i in 1..<list.count{
+                        if list[i]<value{
+                            return i-1
+                        }
+                    }
+                }else if direction < 0{
+                    for i in 1..<list.count{
+                        if list[i]<value{
+                            return i
+                        }
+                    }
+                }else{
+                    for i in 1..<list.count{
+                        compValue = compare(d1: list[i], d2: value)
+                        
+                        if compValue == 0{
+                            return i
+                        }else if compValue < 0 {
+                            if ((list[i-1] - value < (value - list[i]))){
+                                return i-1
+                            }else{
+                                return i
+                            }
+                        }
+                    }
+                    return list.count - 1
                 }
             }
         }
-        
-        switch direction {
-        case 1:
-            if isDescending {
-                return high >= 0 ? high : nil
-            } else {
-                return low < list.count ? low : nil
-            }
-        case -1:
-            if isDescending {
-                return low < list.count ? low : nil
-            } else {
-                return high >= 0 ? high : nil
-            }
-        default:
-            if high < 0 { return low }
-            if low >= list.count { return high }
-            
-            let diffLow = abs(list[low] - value)
-            let diffHigh = abs(list[high] - value)
-            return diffLow < diffHigh ? low : high
+        return nil
+    }
+    
+    func compare(d1: Double, d2: Double) -> Int{
+        if d1 < d2{
+            return -1
         }
+        if d1 > d2{
+            return 1
+        }
+        
+        //let thisBits = doubleToLongBits(value: d1)
+        //let anotherBits = doubleToLongBits(value: d2)
+        
+        return 0
     }
 }

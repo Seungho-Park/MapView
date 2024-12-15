@@ -4,11 +4,6 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
-		<key>MapView MacOS.xcscheme_^#shared#^_</key>
-		<dict>
-			<key>orderHint</key>
-			<integer>2</integer>
-		</dict>
 		<key>WMSView iOS.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>

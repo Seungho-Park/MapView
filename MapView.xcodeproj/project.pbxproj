@@ -18,6 +18,7 @@
 		61255B9B2D0EC2DE0018139E /* ImageTileLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61255B9A2D0EC2DB0018139E /* ImageTileLayer.swift */; };
 		61255BC62D0ED22D0018139E /* Transform.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61255BC52D0ED22B0018139E /* Transform.swift */; };
 		61255BC82D0ED72B0018139E /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61255BC72D0ED7280018139E /* MapView.swift */; };
+		61255C462D0F072F0018139E /* EPSG4326.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61255C452D0F072F0018139E /* EPSG4326.swift */; };
 		617D45F02CEC4E370064D298 /* TileCoordinate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 617D45EF2CEC4E340064D298 /* TileCoordinate.swift */; };
 		617D45F22CEC52B70064D298 /* ImageTile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 617D45F12CEC52B30064D298 /* ImageTile.swift */; };
 		61D483C42CF1B48B00E52922 /* Comparable+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61D483C32CF1B48000E52922 /* Comparable+Extensions.swift */; };
@@ -60,6 +61,7 @@
 		61255B9A2D0EC2DB0018139E /* ImageTileLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageTileLayer.swift; sourceTree = "<group>"; };
 		61255BC52D0ED22B0018139E /* Transform.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Transform.swift; sourceTree = "<group>"; };
 		61255BC72D0ED7280018139E /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
+		61255C452D0F072F0018139E /* EPSG4326.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EPSG4326.swift; sourceTree = "<group>"; };
 		617D45EF2CEC4E340064D298 /* TileCoordinate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TileCoordinate.swift; sourceTree = "<group>"; };
 		617D45F12CEC52B30064D298 /* ImageTile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageTile.swift; sourceTree = "<group>"; };
 		61D483C32CF1B48000E52922 /* Comparable+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Comparable+Extensions.swift"; sourceTree = "<group>"; };
@@ -256,6 +258,7 @@
 			isa = PBXGroup;
 			children = (
 				61D483C52CF1BEC900E52922 /* EPSG3857.swift */,
+				61255C452D0F072F0018139E /* EPSG4326.swift */,
 				61DA3D782CEB13EE00D15C2E /* Projection.swift */,
 			);
 			path = Projection;
@@ -396,6 +399,7 @@
 				61D8C7042CEC3E35004622F7 /* SourceTile.swift in Sources */,
 				61DA3D262CEB006800D15C2E /* Bundle+Extensions.swift in Sources */,
 				617D45F02CEC4E370064D298 /* TileCoordinate.swift in Sources */,
+				61255C462D0F072F0018139E /* EPSG4326.swift in Sources */,
 				61113A3D2CF0DCEB00056FAF /* ResolutionArray.swift in Sources */,
 				61DA3D792CEB13F100D15C2E /* Projection.swift in Sources */,
 				61D8C7102CEC422B004622F7 /* MapCache.swift in Sources */,

@@ -6,24 +6,28 @@
 //
 
 import Foundation
-import CoreGraphics
+#if canImport(UIKit)
+import UIKit
+#elseif canImport(AppKit)
+import AppKit
+#endif
 
 public protocol TileLayerDelegate: AnyObject {
     func refreshLayer()
 }
 
-public protocol TileLayer: AnyObject {
+public protocol TileLayer: CALayer {
     typealias CompletionHandler = (Result<CGImage?, Error>)-> Void
     
     var source: any SourceTile { get }
-    var delegate: TileLayerDelegate? { get set }
+    var mapDelegate: TileLayerDelegate? { get set }
     var screenExtent: MapExtent! { get set }
-    var transform: Transform { get }
+    var tileTransform: Transform { get }
     var size: CGSize { get set }
     
     func manageTilePyramid(_ tiles: [any Tile])
     func prepareFrame(screenSize: CGSize, center: Coordinate, resolution: Double, angle: Double, extent: MapExtent)
-    func render(completion: @escaping CompletionHandler)
+    func render()
 }
 
 public extension TileLayer {
@@ -49,7 +53,8 @@ public extension TileLayer {
             size = .init(width: width, height: height)
         }
         
-        transform.composite(pixelRatio * screenSize.width / 2.0, pixelRatio * screenSize.height / 2.0, (screenExtent.minLongitude - center.longitude) / resolution * pixelRatio, (center.latitude - screenExtent.maxLatitude) / resolution * pixelRatio, scale, scale, angle)
+        tileTransform.composite(pixelRatio * screenSize.width / 2.0, pixelRatio * screenSize.height / 2.0, (screenExtent.minLongitude - center.longitude) / resolution * pixelRatio, (center.latitude - screenExtent.maxLatitude) / resolution * pixelRatio, scale, scale, angle)
+        
         
         manageTilePyramid(getTilePyramid(extent: extent, z: z, preLoad: 0, pixelRatio: 1.0))
         
