@@ -32,6 +32,8 @@ public protocol SourceTile {
     func getTile(_ z: Int, _ x: Int, _ y: Int, _ pixelRatio: Double)-> (any Tile)?
     func updateTile(forKey tileKey: String)-> (any Tile)?
     func clear()
+    
+    func getFixedTileURL(_ coord: TileCoordinate, pixelRatio: Double)-> String
 }
 
 public extension SourceTile {
@@ -123,5 +125,14 @@ public extension SourceTile {
         }
         
         return TileRange(minX: minTileCoord.x, minY: minTileCoord.y, maxX: maxTileCoord.x, maxY: maxTileCoord.y)
+    }
+    
+    internal func getTileCoordExtent(_ tileCoord: TileCoordinate)-> MapExtent? {
+        guard let resolution = resolutions.get(tileCoord.z) else { return nil }
+        
+        let minLongitude = origin.longitude + (Double(tileCoord.x) * config.tileSize * resolution)
+        let minLatitude = origin.latitude + (Double(tileCoord.y) * config.tileSize * resolution)
+        
+        return .init(minLongitude: minLongitude, minLatitude: minLatitude, maxLongitude: minLongitude + (config.tileSize * resolution), maxLatitude: minLatitude + (config.tileSize * resolution))
     }
 }

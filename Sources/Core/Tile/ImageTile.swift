@@ -31,7 +31,7 @@ public final class ImageTile: Tile {
             return false
         }
         
-        tileState = .loaded
+        tileState = data.isEmpty ? .empty : .loaded
         tileData = data
         return true
     }

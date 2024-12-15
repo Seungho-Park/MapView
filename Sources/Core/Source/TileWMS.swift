@@ -42,7 +42,7 @@ final public class TileWMS: SourceTile {
         let tileCoord = wrapX(tileCoord: tileCoord)
         
         if withInExtendAndZ(tileCoord: tileCoord) {
-            let tile = ImageTile(key: getKey(tileCoord), coordinate: tileCoord, url: "\(config.baseUrl)/")
+            let tile = ImageTile(key: getKey(tileCoord), coordinate: tileCoord, url: "\(config.baseUrl)/\(getFixedTileURL(tileCoord, pixelRatio: pixelRatio))")
             
             return tile
         }
@@ -82,5 +82,30 @@ final public class TileWMS: SourceTile {
     public func clear() {
         tileCache.clear()
         buffer.removeAll()
+    }
+    
+    public func getFixedTileURL(_ coord: TileCoordinate, pixelRatio: Double) -> String {
+        guard let tileExtent = getTileCoordExtent(coord) else { return "" }
+        return getRequestParameters(coord, tileExtent)
+    }
+    
+    private func getRequestParameters(_ coord: TileCoordinate, _ extent: MapExtent)-> String {
+        var parameters = config.parameters
+        parameters.updateValue(config.serviceType, forKey: "SERVICE")
+        parameters.updateValue(config.version, forKey: "VERSION")
+        parameters.updateValue(config.tileSize, forKey: "WIDTH")
+        parameters.updateValue(config.tileSize, forKey: "HEIGHT")
+        parameters.updateValue(config.requestType, forKey: "REQUEST")
+        parameters.updateValue(config.format, forKey: "FORMAT")
+        parameters.updateValue(projection.type.rawValue, forKey: "CRS")
+        
+        switch projection.type {
+        case .epsg3857:
+            parameters.updateValue("\(extent.minLongitude),\(extent.minLatitude),\(extent.maxLongitude),\(extent.maxLatitude)", forKey: "BBOX")
+        case .epsg4326:
+            parameters.updateValue("\(extent.minLatitude),\(extent.minLongitude),\(extent.maxLatitude),\(extent.maxLongitude)", forKey: "BBOX")
+        }
+        
+        return parameters.urlQueryParameters
     }
 }
