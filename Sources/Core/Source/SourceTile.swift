@@ -8,6 +8,7 @@
 import Foundation
 
 public protocol SourceTile {
+    associatedtype Config: MapConfigurable
 //    private lazy var resolutions: ResolutionArray = {
 //        let extent = projection.tileExtent
 //        let maxResolution = max(extent.width / config.tileSize, extent.height / config.tileSize)
@@ -25,7 +26,9 @@ public protocol SourceTile {
     
     var projection: Projection { get }
     var resolutions: ResolutionArray { get }
-    var config: MapConfigurable { get }
+    var config: Config { get }
+    var minZoom: Int { get }
+    var maxZoom: Int { get }
     
     func getKey(_ coord: TileCoordinate)-> String
     func createTile(tileCoord: TileCoordinate, pixelRatio: Double)-> (any Tile)?
@@ -47,12 +50,12 @@ public extension SourceTile {
     
     func getZForResolution(resolution: Double, direction: Int)-> Int? {
         guard let z = resolutions.findNearest(value: resolution, direction: direction) else { return nil }
-        return z.clamp(config.minZoom, config.maxZoom)
+        return z.clamp(minZoom, maxZoom)
     }
     
     private func getIndexForResolution(resolution: Double, direction: Int)-> Int? {
         guard let index = resolutions.findNearest(value: resolution, direction: direction) else { return nil }
-        return index.clamp(config.minZoom, config.maxZoom)
+        return index.clamp(minZoom, maxZoom)
     }
     
     internal func wrapX(tileCoord: TileCoordinate)-> TileCoordinate {
@@ -81,7 +84,7 @@ public extension SourceTile {
     }
     
     internal func withInExtendAndZ(tileCoord: TileCoordinate) -> Bool {
-        if config.minZoom > tileCoord.z || tileCoord.z > config.maxZoom {
+        if minZoom > tileCoord.z || tileCoord.z > maxZoom {
             return false
         }
         

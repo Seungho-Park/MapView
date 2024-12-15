@@ -22,13 +22,15 @@ final public class TileWMS: SourceTile {
         resolutions.sort()
         return resolutions
     }()
-    public var config: any MapConfigurable
+    public var config: WMSConfig
     public var projection: any Projection
+    public var minZoom: Int { return config.minZoom }
+    public var maxZoom: Int { return config.maxZoom }
     
-    private let tileCache: TileCache = .init(capacity: 30)
+    private let tileCache: TileCache = TileCache.shared
     private var buffer: [String: any Tile] = [:]
     
-    init(config: any MapConfigurable, projection: any Projection = EPSG3857()) {
+    init(config: WMSConfig, projection: any Projection = EPSG3857()) {
         self.config = config
         self.projection = projection
     }

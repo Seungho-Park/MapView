@@ -64,7 +64,7 @@ public extension TileLayer {
     private func getTilePyramid(extent: MapExtent, z: Int, preLoad: Int, pixelRatio: Double)-> [any Tile] {
         var tiles: [(Double, any Tile)] = []
         
-        for level in stride(from: z, through: source.config.minZoom, by: -1) {
+        for level in stride(from: z, through: source.minZoom, by: -1) {
             guard let tileRange = source.getTileRangeForExtentAndZ(extent: extent, z: z),
                   let tileResolution = source.getResolution(z)
             else {

@@ -32,6 +32,8 @@ open class MapView: UIView {
         
         if let config = config as? WMSConfig {
             mapLayer = ImageTileLayer(source: TileWMS(config: config))
+        } else if let config = config as? TileMapServiceConfig {
+            mapLayer = ImageTileLayer(source: TileTMS(config: config, projection: EPSG3857()))
         }
         
         self.zoom = config.initialZoom
@@ -132,7 +134,7 @@ open class MapView: UIView {
     
     func zoomIn() {
         let newZoom = zoom + 1
-        if newZoom <= mapLayer.source.config.maxZoom {
+        if newZoom <= mapLayer.source.maxZoom {
             zoom = newZoom
             apply()
             renderFrame()
@@ -143,7 +145,7 @@ open class MapView: UIView {
     
     func zoomOut() {
         let newZoom = zoom - 1
-        if newZoom >= mapLayer.source.config.minZoom {
+        if newZoom >= mapLayer.source.minZoom {
             zoom = newZoom
             apply()
             renderFrame()
@@ -157,7 +159,7 @@ open class MapView: UIView {
         let size = max(extent.width, extent.height)
         let maxResolution = size / mapLayer.source.config.tileSize / pow(2, 0)
         
-        resolution = createSnapToPower(delta:Int(zoom - mapLayer.source.config.minZoom), resolution: maxResolution / pow(zoomFactor, Double(mapLayer.source.config.minZoom)), direction: 0)
+        resolution = createSnapToPower(delta:Int(zoom - mapLayer.source.minZoom), resolution: maxResolution / pow(zoomFactor, Double(mapLayer.source.minZoom)), direction: 0)
     }
     
     private func renderFrame() {

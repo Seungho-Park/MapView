@@ -19,6 +19,7 @@
 		61255BC62D0ED22D0018139E /* Transform.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61255BC52D0ED22B0018139E /* Transform.swift */; };
 		61255BC82D0ED72B0018139E /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61255BC72D0ED7280018139E /* MapView.swift */; };
 		61255C462D0F072F0018139E /* EPSG4326.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61255C452D0F072F0018139E /* EPSG4326.swift */; };
+		61255C632D0F4C480018139E /* TileTMS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61255C622D0F4C430018139E /* TileTMS.swift */; };
 		617D45F02CEC4E370064D298 /* TileCoordinate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 617D45EF2CEC4E340064D298 /* TileCoordinate.swift */; };
 		617D45F22CEC52B70064D298 /* ImageTile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 617D45F12CEC52B30064D298 /* ImageTile.swift */; };
 		61D483C42CF1B48B00E52922 /* Comparable+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61D483C32CF1B48000E52922 /* Comparable+Extensions.swift */; };
@@ -62,6 +63,7 @@
 		61255BC52D0ED22B0018139E /* Transform.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Transform.swift; sourceTree = "<group>"; };
 		61255BC72D0ED7280018139E /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
 		61255C452D0F072F0018139E /* EPSG4326.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EPSG4326.swift; sourceTree = "<group>"; };
+		61255C622D0F4C430018139E /* TileTMS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TileTMS.swift; sourceTree = "<group>"; };
 		617D45EF2CEC4E340064D298 /* TileCoordinate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TileCoordinate.swift; sourceTree = "<group>"; };
 		617D45F12CEC52B30064D298 /* ImageTile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageTile.swift; sourceTree = "<group>"; };
 		61D483C32CF1B48000E52922 /* Comparable+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Comparable+Extensions.swift"; sourceTree = "<group>"; };
@@ -159,6 +161,7 @@
 		61D8C7022CEC3E2E004622F7 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				61255C622D0F4C430018139E /* TileTMS.swift */,
 				61113A362CF0A92E00056FAF /* TileWMS.swift */,
 				61D8C7032CEC3E33004622F7 /* SourceTile.swift */,
 			);
@@ -405,6 +408,7 @@
 				61D8C7102CEC422B004622F7 /* MapCache.swift in Sources */,
 				617D45F22CEC52B70064D298 /* ImageTile.swift in Sources */,
 				61255B992D0AFB600018139E /* TileRange.swift in Sources */,
+				61255C632D0F4C480018139E /* TileTMS.swift in Sources */,
 				61113A2F2CF0737A00056FAF /* MapRequesterPool.swift in Sources */,
 				61D483C62CF1BECC00E52922 /* EPSG3857.swift in Sources */,
 				61113A2B2CF0703000056FAF /* MapRequester.swift in Sources */,

@@ -9,16 +9,9 @@ import Foundation
 
 public protocol MapConfigurable {
     var baseUrl: String { get }
-    var minZoom: Int { get }
-    var maxZoom: Int { get }
     var corner: MapExtent.Corner { get }
     var initialZoom: Int { get }
     var tileSize: Double { get }
-    var serviceType: String { get }
-    var version: String { get }
-    var requestType: String { get }
-    var format: String { get }
-    var parameters: [String: Any] { get }
 }
 
 public struct WMSConfig: MapConfigurable {
@@ -32,7 +25,7 @@ public struct WMSConfig: MapConfigurable {
     public let version: String
     public let requestType: String
     public let format: String
-    public var parameters: [String : Any]
+    public let parameters: [String : Any]
     
     public init(baseUrl: String, version: String = "1.3.0", requestType: String, format: String = "image/png", minZoom: Int = 9, maxZoom: Int = 19, initialZoom: Int = 9, tileSize: Double = 256.0, corner: MapExtent.Corner = .topLeft, parameters: [String:Any] = [:]) {
         self.baseUrl = baseUrl
@@ -45,5 +38,25 @@ public struct WMSConfig: MapConfigurable {
         self.requestType = requestType
         self.format = format
         self.parameters = parameters
+    }
+}
+
+public struct TileMapServiceConfig: MapConfigurable {
+    public let baseUrl: String
+    public let corner: MapExtent.Corner
+    public let tileSize: Double
+    public let initialZoom: Int
+    public let layer: TileMapServiceLayer
+    public let apiKey: String?
+    
+    // WMTS일 경우 corner 값 topLeft.
+    // WMTS의 경우 좌상단이 0,0이고 TMS의 경우 좌하단이 0,0
+    public init(baseUrl: String, corner: MapExtent.Corner = .bottomLeft, initialZoom: Int, layer: TileMapServiceLayer, tileSize: Double = 256.0, apiKey: String? = nil) {
+        self.baseUrl = baseUrl
+        self.initialZoom = initialZoom
+        self.layer = layer
+        self.tileSize = tileSize
+        self.apiKey = apiKey
+        self.corner = corner
     }
 }
