@@ -22,7 +22,7 @@ open class MapView: UIView {
     
     private let zoomFactor = 2.0
     private var resolution: Double = .zero
-    private var centerCoord: Coordinate = .init(latitude: 4263282, longitude: 14287820)
+    private var centerCoord: Coordinate = .init(latitude: 4519089.62003392, longitude: 14134945.162872873)
     private var zoom: Int = 7
     private var angle: Double = 0
     private var isAvailableRotate: Bool = false
@@ -34,8 +34,8 @@ open class MapView: UIView {
             mapLayer = ImageTileLayer(source: TileWMS(config: config))
         }
         
-        mapLayer.mapDelegate = self
         self.zoom = config.initialZoom
+        mapLayer.mapDelegate = self
         
         commit()
     }
@@ -63,8 +63,10 @@ open class MapView: UIView {
         super.draw(rect)
         
         canvasLayer.frame = rect
-        apply(screenSize: rect.size)
-        renderFrame(rect: rect)
+        mapLayer.frame = canvasLayer.frame
+        
+        apply()
+        renderFrame()
     }
     
     public override func layoutSubviews() {
@@ -127,19 +129,41 @@ open class MapView: UIView {
         return .init(x: point.x, y: point.y)
     }
     
-    private func apply(screenSize: CGSize) {
+    func zoomIn() {
+        let newZoom = zoom + 1
+        if newZoom <= mapLayer.source.config.maxZoom {
+            zoom = newZoom
+            apply()
+            renderFrame()
+        }
+        
+        setNeedsLayout()
+    }
+    
+    func zoomOut() {
+        let newZoom = zoom - 1
+        if newZoom >= mapLayer.source.config.minZoom {
+            zoom = newZoom
+            apply()
+            renderFrame()
+        }
+        
+        setNeedsLayout()
+    }
+    
+    private func apply() {
         let extent = mapLayer.source.extent
         let size = max(extent.width, extent.height)
         let maxResolution = size / mapLayer.source.config.tileSize / pow(2, 0)
         
         resolution = createSnapToPower(delta:Int(zoom - mapLayer.source.config.minZoom), resolution: maxResolution / pow(zoomFactor, Double(mapLayer.source.config.minZoom)), direction: 0)
-        
-        lonlatToPixelTransform.composite(screenSize.width / 2, screenSize.height / 2, -centerCoord.longitude, -centerCoord.latitude, 1 / resolution, -1 / resolution, angle)
-        pixelToLonlatTransform.inverse(transform: lonlatToPixelTransform)
     }
     
-    private func renderFrame(rect: CGRect) {
-        mapLayer.prepareFrame(screenSize: rect.size, center: centerCoord, resolution: resolution, angle: angle, extent: getScreenExtent(size: rect.size))
+    private func renderFrame() {
+        mapLayer.prepareFrame(screenSize: self.bounds.size, center: centerCoord, resolution: resolution, angle: angle, extent: getScreenExtent(size: self.bounds.size))
+        
+        lonlatToPixelTransform.composite(self.bounds.size.width / 2, self.bounds.size.height / 2, -centerCoord.longitude, -centerCoord.latitude, 1 / resolution, -1 / resolution, angle)
+        pixelToLonlatTransform.inverse(transform: lonlatToPixelTransform)
     }
     
     private func getScreenExtent(size: CGSize)-> MapExtent {
@@ -256,7 +280,7 @@ public extension MapView {
             centerXY.y -= yLen
             
             self.centerCoord = pixelToWorld(point: centerXY)
-            renderFrame(rect: self.frame)
+            renderFrame()
             setNeedsLayout()
         case .zoom(let startDistance, let moveDistance):
             let scaleRate: Double
@@ -273,6 +297,12 @@ public extension MapView {
                 let y = touches[0].y - touches[1].y
                 
                 scaleRate = sqrt(x*x + y*y) / startDistance!
+            }
+            
+            if scaleRate > 1 {
+                zoomIn()
+            } else if scaleRate < 1{
+                zoomOut()
             }
         }
         

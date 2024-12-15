@@ -86,7 +86,7 @@ public extension TileLayer {
             }
         }
         
-        return tiles.sorted { $0.0 > $1.0 }.map { $0.1 }
+        return tiles.sorted { $0.0 < $1.0 }.map { $0.1 }
     }
     
     private func getTilePriority(tileCoord: TileCoordinate, center: Coordinate, tileResolution: Double)-> Double {
