@@ -13,6 +13,7 @@ import AppKit
 #endif
 
 public class ImageTileLayer: CALayer, TileLayer {
+    private let semaphore = DispatchSemaphore(value: 1)
     private var requesters: [any MapRequester] = []
     private var renderingTiles: [(CGImage, CGRect)] = []
     private var resolution: Double = 0
@@ -26,6 +27,10 @@ public class ImageTileLayer: CALayer, TileLayer {
     public init(source: any SourceTile) {
         self.source = source
         super.init()
+        
+//        self.tileSize = .init(width: source.config.tileSize, height: source.config.tileSize)
+//        self.levelsOfDetail = source.maxZoom
+//        self.levelsOfDetailBias = 1
         for _ in 0..<6 {
             let requester = WMSRequester()
             requester.start(completion: notifyTile(_:))
@@ -37,7 +42,9 @@ public class ImageTileLayer: CALayer, TileLayer {
         fatalError("init(coder:) has not been implemented")
     }
     
-    public func render() {
+    public override func draw(in ctx: CGContext) {
+        print("\(#function)")
+        
         let layerRect = CGRect(
             origin: .init(x: tileTransform.get(4), y: tileTransform.get(5)),
             size: .init(width: size.width * tileTransform.get(0), height: size.height * tileTransform.get(3))
@@ -56,6 +63,7 @@ public class ImageTileLayer: CALayer, TileLayer {
                 }
             }
         }
+        
         CATransaction.begin()
         CATransaction.setDisableActions(true)
         self.frame = layerRect
@@ -69,6 +77,8 @@ public class ImageTileLayer: CALayer, TileLayer {
         else {
             return
         }
+        defer { semaphore.signal() }
+        semaphore.wait()
         
         self.resolution = resolution
         renderingTiles.removeAll()
@@ -88,6 +98,8 @@ public class ImageTileLayer: CALayer, TileLayer {
     }
     
     private func notifyTile(_ tileKeys: [String]) {
+        defer { semaphore.signal() }
+        semaphore.wait()
         var tiles: [ImageTile] = []
         
         for i in 0..<tileKeys.count {
@@ -107,6 +119,7 @@ public class ImageTileLayer: CALayer, TileLayer {
     
     private func drawTiles(_ tiles: [ImageTile], overSampling: Double = 1.0) {
         guard let screenExtent else { return }
+        
         let options: [NSString: Any] = [
             kCGImageSourceThumbnailMaxPixelSize: source.config.tileSize,
             kCGImageSourceCreateThumbnailFromImageAlways: true

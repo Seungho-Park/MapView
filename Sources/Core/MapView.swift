@@ -61,15 +61,13 @@ open class MapView: UIView {
         self.layer.addSublayer(canvasLayer)
     }
     
-    open override func draw(_ rect: CGRect) {
-        super.draw(rect)
-        
-        print("\(#function): \(rect)")
+    open override func draw(_ layer: CALayer, in ctx: CGContext) {
+        super.draw(layer, in: ctx)
         
         apply()
         renderFrame()
         
-        mapLayer.render()
+        mapLayer.draw(in: ctx)
     }
     
     open override func layoutSublayers(of layer: CALayer) {
@@ -96,7 +94,7 @@ open class MapView: UIView {
             canvasLayer.setAffineTransform(.init(scaleX: scaleRate, y: scaleRate))
             CATransaction.commit()
         case .none:
-            setNeedsDisplay()
+            self.layer.setNeedsDisplay()
             CATransaction.begin()
             CATransaction.setDisableActions(true)
             canvasLayer.setAffineTransform(.identity)
@@ -310,7 +308,7 @@ public extension MapView {
 extension MapView: TileLayerDelegate {
     public func refreshLayer() {
         DispatchQueue.main.async {
-            self.setNeedsDisplay()
+            self.layer.setNeedsDisplay()
         }
     }
 }

@@ -27,7 +27,6 @@ public protocol TileLayer: CALayer {
     
     func manageTilePyramid(_ tiles: [any Tile])
     func prepareFrame(screenSize: CGSize, center: Coordinate, resolution: Double, angle: Double, extent: MapExtent)
-    func render()
 }
 
 public extension TileLayer {
