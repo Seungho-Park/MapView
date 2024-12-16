@@ -23,7 +23,6 @@ public final class ImageTile: Tile {
     }
     
     public func load()-> Bool {
-        print("url: \(url)")
         guard let url = URL(string: url),
               let data = try? Data(contentsOf: url)
         else {

@@ -29,7 +29,7 @@ public protocol TileLayer: CALayer {
     func prepareFrame(screenSize: CGSize, center: Coordinate, resolution: Double, angle: Double, extent: MapExtent)
 }
 
-public extension TileLayer {
+public extension TileLayer {    
     internal func prepare(screenSize: CGSize, center: Coordinate, z: Int, resolution: Double, angle: Double, extent: MapExtent, tileRange: TileRange, overSampling: Double)-> [any Tile] {
         var renderedTiles: [any Tile] = []
         

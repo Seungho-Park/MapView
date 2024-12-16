@@ -12,10 +12,10 @@ import UIKit
 import AppKit
 #endif
 
-public class ImageTileLayer: CALayer, TileLayer {
+public class ImageTileLayer: CATiledLayer, TileLayer {
     private let semaphore = DispatchSemaphore(value: 1)
     private var requesters: [any MapRequester] = []
-    private var renderingTiles: [(CGImage, CGRect)] = []
+    private var renderingTiles: [(CGImage?, CGRect)] = []
     private var resolution: Double = 0
     
     public let source: any SourceTile
@@ -28,9 +28,11 @@ public class ImageTileLayer: CALayer, TileLayer {
         self.source = source
         super.init()
         
-//        self.tileSize = .init(width: source.config.tileSize, height: source.config.tileSize)
-//        self.levelsOfDetail = source.maxZoom
-//        self.levelsOfDetailBias = 1
+        self.tileSize = .init(width: source.config.tileSize, height: source.config.tileSize)
+        self.levelsOfDetail = source.maxZoom
+        self.levelsOfDetailBias = 1
+        self.drawsAsynchronously = false
+        
         for _ in 0..<6 {
             let requester = WMSRequester()
             requester.start(completion: notifyTile(_:))
@@ -42,33 +44,44 @@ public class ImageTileLayer: CALayer, TileLayer {
         fatalError("init(coder:) has not been implemented")
     }
     
-    public override func draw(in ctx: CGContext) {
+    public override func render(in ctx: CGContext) {
         print("\(#function)")
+        
+//        ctx.setAllowsAntialiasing(false)
+//        ctx.setShouldAntialias(false)
         
         let layerRect = CGRect(
             origin: .init(x: tileTransform.get(4), y: tileTransform.get(5)),
             size: .init(width: size.width * tileTransform.get(0), height: size.height * tileTransform.get(3))
         )
         
-        let format = UIGraphicsImageRendererFormat()
-        format.opaque = false
-        format.scale = 0.0
-        let renderer = UIGraphicsImageRenderer(size: layerRect.size, format: format)
-        let renderedImage = renderer.image { [weak self] _ in
-            guard let self else { return }
-            for i in 0..<renderingTiles.count {
-                autoreleasepool {
-                    let (tile, rect) = self.renderingTiles[i]
-                    UIImage(cgImage: tile).draw(in: rect)
-                }
+        let renderingTiles = renderingTiles
+        
+        ctx.saveGState()
+        ctx.translateBy(x: 0, y: layerRect.height)
+        ctx.scaleBy(x: 1, y: -1)
+        
+        for i in 0..<renderingTiles.count {
+            let (tile, rect) = renderingTiles[i]
+            if let tile = tile {
+                let rect = CGRect(
+                    x: layerRect.minX + rect.origin.x,
+                    y: layerRect.height - rect.origin.y - rect.height, // Y좌표 반전
+                    width: rect.width,
+                    height: rect.height
+                )
+                
+                print(rect.minY)
+                
+                ctx.draw(tile, in: rect.insetBy(dx: -1, dy: -1))
             }
         }
         
-        CATransaction.begin()
-        CATransaction.setDisableActions(true)
-        self.frame = layerRect
-        self.contents = renderedImage.cgImage
-        CATransaction.commit()
+        ctx.restoreGState()
+    }
+    
+    public override func draw(in ctx: CGContext) {
+        ctx.saveGState()
     }
     
     public func prepareFrame(screenSize: CGSize, center: Coordinate, resolution: Double, angle: Double, extent: MapExtent) {

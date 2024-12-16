@@ -8,7 +8,7 @@
 import Foundation
 
 final class TileCache: MapCache {
-    static let shared = TileCache(capacity: 100)
+    static let shared = TileCache(capacity: 30)
     
     var cache: NSCache<NSString, CacheWrapper<any Tile>>
     var capacity: Int {
