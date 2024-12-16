@@ -6,12 +6,12 @@
 //
 import Foundation
 
-internal final class WMSRequester: MapRequester {
+internal final class MapServiceRequester: ServiceRequester {
     private let dispatchQueue: DispatchQueue = .init(label: "net.devswift.webview.WMSRequester", qos: .utility, attributes: .concurrent)
-    public var requesterPool: any MapRequesterPool
+    public var requesterPool: any ServiceRequesterPool
     public var isActive: Bool
     
-    public init(requesterPool: any MapRequesterPool = WMSRequesterPool.shared, isActive: Bool = true) {
+    public init(requesterPool: any ServiceRequesterPool = MapServiceRequesterPool.shared, isActive: Bool = true) {
         self.requesterPool = requesterPool
         self.isActive = isActive
     }

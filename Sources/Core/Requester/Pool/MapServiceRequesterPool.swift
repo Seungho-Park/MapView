@@ -7,9 +7,9 @@
 
 import Foundation
 
-internal final class WMSRequesterPool: MapRequesterPool {
+internal final class MapServiceRequesterPool: ServiceRequesterPool {
     private let semaphore = DispatchSemaphore(value: 1)
-    static var shared: WMSRequesterPool = WMSRequesterPool()
+    static var shared: MapServiceRequesterPool = MapServiceRequesterPool()
     
     internal var tiles: [ImageTile] = []
     

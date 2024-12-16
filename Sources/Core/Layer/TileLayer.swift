@@ -73,11 +73,10 @@ public extension TileLayer {
             for x in tileRange.minX...tileRange.maxX {
                 for y in tileRange.minY...tileRange.maxY {
                     if z - level <= preLoad {
-                        if var tile = source.getTile(level, x, y, pixelRatio),
-                           let center = source.getCenterForTileCoordinate(tileCoord: tile.coordinate),
-                           tile.tileState == .idle {
+                        if var tile = source.getTile(level, x, y, pixelRatio), tile.tileState == .idle,
+                           let center = source.getCenterForTileCoordinate(tileCoord: tile.coordinate)
+                        {
                             tile.tileState = .loading
-                            
                             tiles.append((getTilePriority(tileCoord: tile.coordinate, center: center, tileResolution: tileResolution), tile))
                         }
                     }

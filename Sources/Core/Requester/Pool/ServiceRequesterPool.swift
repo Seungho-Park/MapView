@@ -7,7 +7,7 @@
 
 import Foundation
 
-public protocol MapRequesterPool {
+public protocol ServiceRequesterPool {
     associatedtype TileType: Tile
     
     static var shared: Self { get }
@@ -19,7 +19,7 @@ public protocol MapRequesterPool {
     func contains(forKey key: String)-> Bool
 }
 
-public extension MapRequesterPool {
+public extension ServiceRequesterPool {
     var count: Int {
         return tiles.count
     }

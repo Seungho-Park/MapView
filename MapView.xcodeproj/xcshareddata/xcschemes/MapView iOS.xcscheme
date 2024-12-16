@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "1610"
+   LastUpgradeVersion = "1620"
    version = "1.7">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -15,7 +15,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "61DA3CE72CEAF73F00D15C2E"
+               BlueprintIdentifier = "614850322D1097030013DC06"
                BuildableName = "MapView_iOS.framework"
                BlueprintName = "MapView iOS"
                ReferencedContainer = "container:MapView.xcodeproj">
@@ -50,7 +50,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "61DA3CE72CEAF73F00D15C2E"
+            BlueprintIdentifier = "614850322D1097030013DC06"
             BuildableName = "MapView_iOS.framework"
             BlueprintName = "MapView iOS"
             ReferencedContainer = "container:MapView.xcodeproj">

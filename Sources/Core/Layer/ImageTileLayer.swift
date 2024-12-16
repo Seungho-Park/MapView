@@ -14,7 +14,7 @@ import AppKit
 
 public class ImageTileLayer: CATiledLayer, TileLayer {
     private let semaphore = DispatchSemaphore(value: 1)
-    private var requesters: [any MapRequester] = []
+    private var requesters: [any ServiceRequester] = []
     private var renderingTiles: [(CGImage?, CGRect)] = []
     private var resolution: Double = 0
     
@@ -31,10 +31,11 @@ public class ImageTileLayer: CATiledLayer, TileLayer {
         self.tileSize = .init(width: source.config.tileSize, height: source.config.tileSize)
         self.levelsOfDetail = source.maxZoom
         self.levelsOfDetailBias = 1
-        self.drawsAsynchronously = false
+        self.drawsAsynchronously = true
+        self.shouldRasterize = true
         
         for _ in 0..<6 {
-            let requester = WMSRequester()
+            let requester = MapServiceRequester()
             requester.start(completion: notifyTile(_:))
             requesters.append(requester)
         }
@@ -66,10 +67,10 @@ public class ImageTileLayer: CATiledLayer, TileLayer {
             let (tile, rect) = renderingTiles[i]
             if let tile = tile {
                 let rect = CGRect(
-                    x: rect.origin.x - 0.5,
-                    y: layerRect.height - rect.origin.y - rect.height - 0.5,
-                    width: rect.width + 1,
-                    height: rect.height + 1
+                    x: rect.origin.x,
+                    y: layerRect.height - rect.origin.y - rect.height,
+                    width: rect.width,
+                    height: rect.height
                 )
                 
                 ctx.draw(tile, in: rect)
@@ -77,10 +78,6 @@ public class ImageTileLayer: CATiledLayer, TileLayer {
         }
         
         ctx.restoreGState()
-    }
-    
-    public override func draw(in ctx: CGContext) {
-        ctx.saveGState()
     }
     
     public func prepareFrame(screenSize: CGSize, center: Coordinate, resolution: Double, angle: Double, extent: MapExtent) {
@@ -104,7 +101,7 @@ public class ImageTileLayer: CATiledLayer, TileLayer {
     public func manageTilePyramid(_ tiles: [any Tile]) {
         for i in 0..<tiles.count {
             if let tile = tiles[i] as? ImageTile {
-                WMSRequesterPool.shared.enqueue(tile)
+                MapServiceRequesterPool.shared.enqueue(tile)
             }
         }
     }

@@ -27,7 +27,7 @@ public struct WMSConfig: MapConfigurable {
     public let format: String
     public let parameters: [String : Any]
     
-    public init(baseUrl: String, version: String = "1.3.0", requestType: String, format: String = "image/png", minZoom: Int = 9, maxZoom: Int = 19, initialZoom: Int = 9, tileSize: Double = 256.0, corner: MapExtent.Corner = .topLeft, parameters: [String:Any] = [:]) {
+    public init(baseUrl: String, version: String = "1.3.0", requestType: String, format: String = "image/png", minZoom: Int = 5, maxZoom: Int = 19, initialZoom: Int = 7, tileSize: Double = 256.0, corner: MapExtent.Corner = .topLeft, parameters: [String:Any] = [:]) {
         self.baseUrl = baseUrl
         self.minZoom = minZoom
         self.maxZoom = maxZoom

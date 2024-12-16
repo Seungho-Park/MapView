@@ -263,9 +263,7 @@ public extension MapView {
     }
     
     private func isMoveMapAction(from point1: CGPoint, to point2: CGPoint, threshold: CGFloat = 5) -> Bool {
-        let dx = point1.x - point2.x
-        let dy = point1.y - point2.y
-        return sqrt(dx * dx + dy * dy) > threshold
+        return calculateDistance(between: point1, and: point2) > threshold
     }
     
     private func handleMoveMap(from startPoint: CGPoint, to endPoint: CGPoint) {
