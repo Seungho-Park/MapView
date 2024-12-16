@@ -14,7 +14,7 @@ public protocol TileMapServiceLayer {
 }
 
 final public class TileTMS: SourceTile {
-    private let tileCache = TileCache.shared
+//    private let tileCache = TileCache.shared
     private var tileBuffer: [String: any Tile] = [:]
     private var layerType: TileMapServiceLayer!
     
@@ -60,7 +60,7 @@ final public class TileTMS: SourceTile {
     public func getTile(_ z: Int, _ x: Int, _ y: Int, _ pixelRatio: Double) -> (any Tile)? {
         let coord = TileCoordinate(z: z, x: x, y: y)
         let tileKey = getKey(coord)
-        if let tile = tileCache.get(forKey: tileKey) ?? tileBuffer[tileKey] ?? createTile(tileCoord: coord, pixelRatio: pixelRatio) {
+        if let tile = tileBuffer[tileKey] ?? createTile(tileCoord: coord, pixelRatio: pixelRatio) {
             tileBuffer.updateValue(tile, forKey: tileKey)
             return tile
         }
@@ -69,16 +69,16 @@ final public class TileTMS: SourceTile {
     }
     
     public func updateTile(forKey tileKey: String) -> (any Tile)? {
-        if let tile = tileBuffer.removeValue(forKey: tileKey) {
-            tileCache.update(tile, forKey: tileKey)
-            return tile
-        }
+//        if let tile = tileBuffer.removeValue(forKey: tileKey) {
+//            tileCache.update(tile, forKey: tileKey)
+//            return tile
+//        }
         
-        return nil
+        return tileBuffer[tileKey]
     }
     
     public func clear() {
-        tileCache.clear()
+//        tileCache.clear()
         tileBuffer.removeAll()
     }
     
