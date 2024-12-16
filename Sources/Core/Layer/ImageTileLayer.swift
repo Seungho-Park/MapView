@@ -47,9 +47,6 @@ public class ImageTileLayer: CATiledLayer, TileLayer {
     public override func render(in ctx: CGContext) {
         print("\(#function)")
         
-//        ctx.setAllowsAntialiasing(false)
-//        ctx.setShouldAntialias(false)
-        
         let layerRect = CGRect(
             origin: .init(x: tileTransform.get(4), y: tileTransform.get(5)),
             size: .init(width: size.width * tileTransform.get(0), height: size.height * tileTransform.get(3))
@@ -58,22 +55,24 @@ public class ImageTileLayer: CATiledLayer, TileLayer {
         let renderingTiles = renderingTiles
         
         ctx.saveGState()
-        ctx.translateBy(x: 0, y: layerRect.height)
+        ctx.translateBy(x: layerRect.minX, y: layerRect.maxY)
         ctx.scaleBy(x: 1, y: -1)
+        
+        //Empty Background Color
+        ctx.setFillColor(UIColor(red: 52/255, green: 58/255, blue: 64/255, alpha: 1).cgColor)
+        ctx.fill([ctx.boundingBoxOfClipPath])
         
         for i in 0..<renderingTiles.count {
             let (tile, rect) = renderingTiles[i]
             if let tile = tile {
                 let rect = CGRect(
-                    x: layerRect.minX + rect.origin.x,
-                    y: layerRect.height - rect.origin.y - rect.height, // Y좌표 반전
-                    width: rect.width,
-                    height: rect.height
+                    x: rect.origin.x - 0.5,
+                    y: layerRect.height - rect.origin.y - rect.height - 0.5,
+                    width: rect.width + 1,
+                    height: rect.height + 1
                 )
                 
-                print(rect.minY)
-                
-                ctx.draw(tile, in: rect.insetBy(dx: -1, dy: -1))
+                ctx.draw(tile, in: rect)
             }
         }
         

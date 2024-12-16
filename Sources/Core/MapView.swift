@@ -84,9 +84,7 @@ open class MapView: UIView {
             apply()
             renderFrame()
             
-            ctx.saveGState()
             mapLayer.render(in: ctx)
-            ctx.restoreGState()
         }
     }
     
