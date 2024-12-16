@@ -51,7 +51,7 @@ public struct TileMapServiceConfig: MapConfigurable {
     
     // WMTS일 경우 corner 값 topLeft.
     // WMTS의 경우 좌상단이 0,0이고 TMS의 경우 좌하단이 0,0
-    public init(baseUrl: String, corner: MapExtent.Corner = .bottomLeft, initialZoom: Int, layer: TileMapServiceLayer, tileSize: Double = 256.0, apiKey: String? = nil) {
+    public init(baseUrl: String, corner: MapExtent.Corner = .topLeft, initialZoom: Int, layer: TileMapServiceLayer, tileSize: Double = 256.0, apiKey: String? = nil) {
         self.baseUrl = baseUrl
         self.initialZoom = initialZoom
         self.layer = layer
