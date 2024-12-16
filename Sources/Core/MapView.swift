@@ -9,8 +9,8 @@ import UIKit
 
 private enum MapState {
     case none
-    case move(CGPoint?, CGPoint?)
-    case zoom(Double?, Double?)
+    case move(startPoint: CGPoint, currentPoint: CGPoint)
+    case zoom(startDistance: Double, currentDistance: Double?)
 }
 
 open class MapView: UIView {
@@ -79,8 +79,8 @@ open class MapView: UIView {
         
         switch mapState {
         case .move(let downPoint, let movePoint):
-            let moveX = movePoint!.x - downPoint!.x
-            let moveY = movePoint!.y - downPoint!.y
+            let moveX = movePoint.x - downPoint.x
+            let moveY = movePoint.y - downPoint.y
             viewRect = CGRect(x: moveX, y: moveY, width: canvasLayer.frame.width, height: canvasLayer.frame.height)
             
             CATransaction.begin()
@@ -88,14 +88,8 @@ open class MapView: UIView {
             canvasLayer.frame = viewRect
             CATransaction.commit()
         case .zoom(let startDistance, let moveDistance):
-            guard let moveDistance = moveDistance,
-                  let startDistance = startDistance
-            else {
-                break
-            }
-            
-            var scaleRate = moveDistance / startDistance
-            scaleRate = scaleRate < 0.5 ? 0.5 : scaleRate > 2.0 ? 2.0 : scaleRate
+            guard let moveDistance = moveDistance else { break }
+            let scaleRate = max(0.5, min(moveDistance / startDistance, 2.0))
             
             CATransaction.begin()
             CATransaction.setDisableActions(true)
@@ -209,104 +203,65 @@ open class MapView: UIView {
     }
 }
 
+// MARK: - Touch Event
 public extension MapView {
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        guard let count = event?.allTouches?.count, (count > 0 && count < 3),
-              let touches = event?.allTouches?.map({ $0.location(in: self) })
-        else { return }
+        guard let allTouches = event?.allTouches, (1...2).contains(allTouches.count) else { return }
+        let touchPoints = allTouches.map { $0.location(in: self) }
         
-        if count == 1 {
-            mapState = .move(touches.first!, touches.first!)
+        if allTouches.count == 1 {
+            mapState = .move(startPoint: touchPoints[0], currentPoint: touchPoints[0])
         } else {
-            let x = touches[0].x - touches[1].x
-            let y = touches[0].y - touches[1].y
-            
-            mapState = .zoom(sqrt(x*x + y*y), nil)
+            let distance = calculateDistance(between: touchPoints[0], and: touchPoints[1])
+            mapState = .zoom(startDistance: distance, currentDistance: nil)
         }
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-        guard let count = event?.allTouches?.count, (count > 0 && count < 3),
-              let touches = event?.allTouches?.map({ $0.location(in: self) })
-        else { return }
+        guard let allTouches = event?.allTouches, (1...2).contains(allTouches.count) else { return }
+        let touchPoints = allTouches.map { $0.location(in: self) }
         
         switch mapState {
-        case .none: break
-        case .move(let downPoint, let movePoint):
-            if count > 1 {
-                let x = touches[0].x - touches[1].x
-                let y = touches[0].y - touches[1].y
-                mapState = .zoom(sqrt(x*x + y*y), sqrt(x*x + y*y))
-                break
-            }
-            let newMovePoint = touches.first!
-            if (round(newMovePoint.x) != round(movePoint!.x)) || (round(newMovePoint.y) != round(movePoint!.y)) {
-                mapState = .move(downPoint, newMovePoint)
-                
-                let xLen = newMovePoint.x - downPoint!.x
-                let yLen = newMovePoint.y - downPoint!.y
-                
-                if sqrt(pow(xLen, 2) + pow(yLen, 2)) > 5 {
+        case .none:
+            break
+        case .move(let startPoint, let currentPoint):
+            if allTouches.count > 1 {
+                let distance = calculateDistance(between: touchPoints[0], and: touchPoints[1])
+                mapState = .zoom(startDistance: distance, currentDistance: distance)
+            } else {
+                let newPoint = touchPoints[0]
+                if isMoveMapAction(from: currentPoint, to: newPoint) {
+                    mapState = .move(startPoint: startPoint, currentPoint: newPoint)
                     self.layer.setNeedsLayout()
                 }
             }
         case .zoom(let startDistance, _):
-            if count < 2 { break }
-            let x = touches[0].x - touches[1].x
-            let y = touches[0].y - touches[1].y
-            
-            mapState = .zoom(startDistance, sqrt(x*x + y*y))
+            guard touchPoints.count == 2 else { break }
+            let distance = calculateDistance(between: touchPoints[0], and: touchPoints[1])
+            mapState = .zoom(startDistance: startDistance, currentDistance: distance)
             self.layer.setNeedsLayout()
         }
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        guard let count = event?.allTouches?.count, (count > 0 && count < 3),
-              let touches = event?.allTouches?.map({ $0.location(in: self) })
-        else { return }
+        guard let allTouches = event?.allTouches, (1...2).contains(allTouches.count) else { return }
+        let touchPoints = allTouches.map { $0.location(in: self) }
         
         switch mapState {
-        case .none: break
-        case .move(let downPoint, _):
-            if count > 1 { break }
-            let touchUp = touches.first!
+        case .none:
+            break
+        case .move(let startPoint, _):
+            guard allTouches.count == 1 else { break }
+            let endPoint = touchPoints[0]
             
-            let xLen = touchUp.x - downPoint!.x
-            let yLen = touchUp.y - downPoint!.y
-            
-            if sqrt(pow(xLen, 2) + pow(yLen, 2)) < 5{
-                break
+            if isMoveMapAction(from: startPoint, to: endPoint) {
+                handleMoveMap(from: startPoint, to: endPoint)
             }
+        case .zoom(let startDistance, let currentDistance):
+            guard let currentDistance = currentDistance else { break }
             
-            var centerXY = worldToPixel(coord: centerCoord)
-            centerXY.x -= xLen
-            centerXY.y -= yLen
-            
-            self.centerCoord = pixelToWorld(point: centerXY)
-            renderFrame()
-            self.layer.setNeedsLayout()
-        case .zoom(let startDistance, let moveDistance):
-            let scaleRate: Double
-            if touches.count < 2 {
-                guard let start = startDistance, let move = moveDistance else {
-                    mapState = .none
-                    self.layer.setNeedsLayout()
-                    return
-                }
-                
-                scaleRate = move / start
-            } else {
-                let x = touches[0].x - touches[1].x
-                let y = touches[0].y - touches[1].y
-                
-                scaleRate = sqrt(x*x + y*y) / startDistance!
-            }
-            
-            if scaleRate > 1 {
-                zoomIn()
-            } else if scaleRate < 1{
-                zoomOut()
-            }
+            let scaleRate = currentDistance / startDistance
+            handleZoom(with: scaleRate)
         }
         
         mapState = .none
@@ -315,6 +270,40 @@ public extension MapView {
     override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
         mapState = .none
         self.layer.setNeedsLayout()
+    }
+    
+    // MARK: - Handle Methods
+    private func calculateDistance(between point1: CGPoint, and point2: CGPoint) -> Double {
+        let dx = point1.x - point2.x
+        let dy = point1.y - point2.y
+        return sqrt(dx * dx + dy * dy)
+    }
+    
+    private func isMoveMapAction(from point1: CGPoint, to point2: CGPoint, threshold: CGFloat = 5) -> Bool {
+        let dx = point1.x - point2.x
+        let dy = point1.y - point2.y
+        return sqrt(dx * dx + dy * dy) > threshold
+    }
+    
+    private func handleMoveMap(from startPoint: CGPoint, to endPoint: CGPoint) {
+        let deltaX = endPoint.x - startPoint.x
+        let deltaY = endPoint.y - startPoint.y
+        
+        var centerXY = worldToPixel(coord: centerCoord)
+        centerXY.x -= deltaX
+        centerXY.y -= deltaY
+        
+        centerCoord = pixelToWorld(point: centerXY)
+        renderFrame()
+        self.layer.setNeedsLayout()
+    }
+    
+    private func handleZoom(with scaleRate: Double) {
+        if scaleRate > 1 {
+            zoomIn()
+        } else if scaleRate < 1 {
+            zoomOut()
+        }
     }
 }
 
