@@ -22,6 +22,8 @@
 		61255C632D0F4C480018139E /* TileTMS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61255C622D0F4C430018139E /* TileTMS.swift */; };
 		617D45F02CEC4E370064D298 /* TileCoordinate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 617D45EF2CEC4E340064D298 /* TileCoordinate.swift */; };
 		617D45F22CEC52B70064D298 /* ImageTile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 617D45F12CEC52B30064D298 /* ImageTile.swift */; };
+		619162372D1008E500F17F76 /* MapView_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 61DA3CE82CEAF73F00D15C2E /* MapView_iOS.framework */; };
+		619162382D1008E500F17F76 /* MapView_iOS.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 61DA3CE82CEAF73F00D15C2E /* MapView_iOS.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		61D483C42CF1B48B00E52922 /* Comparable+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61D483C32CF1B48000E52922 /* Comparable+Extensions.swift */; };
 		61D483C62CF1BECC00E52922 /* EPSG3857.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61D483C52CF1BEC900E52922 /* EPSG3857.swift */; };
 		61D8C7042CEC3E35004622F7 /* SourceTile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61D8C7032CEC3E33004622F7 /* SourceTile.swift */; };
@@ -30,7 +32,6 @@
 		61D8C7102CEC422B004622F7 /* MapCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61D8C70F2CEC4229004622F7 /* MapCache.swift */; };
 		61D8C7122CEC4252004622F7 /* CacheWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61D8C7112CEC424D004622F7 /* CacheWrapper.swift */; };
 		61D8C7142CEC4298004622F7 /* Tile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61D8C7132CEC4298004622F7 /* Tile.swift */; };
-		61D8C7252CEC44C6004622F7 /* MapView_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 61DA3CE82CEAF73F00D15C2E /* MapView_iOS.framework */; };
 		61DA3D1B2CEAFEE400D15C2E /* images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 61DA3D152CEAFEE400D15C2E /* images.xcassets */; };
 		61DA3D262CEB006800D15C2E /* Bundle+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61DA3D252CEB000900D15C2E /* Bundle+Extensions.swift */; };
 		61DA3D2D2CEB0BF900D15C2E /* Double+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61DA3D2C2CEB0BF500D15C2E /* Double+Extensions.swift */; };
@@ -41,7 +42,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		61D8C7262CEC44C6004622F7 /* PBXContainerItemProxy */ = {
+		619162392D1008E500F17F76 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 61DA3CDF2CEAF73F00D15C2E /* Project object */;
 			proxyType = 1;
@@ -49,6 +50,20 @@
 			remoteInfo = "MapView iOS";
 		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		6191623B2D1008E500F17F76 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				619162382D1008E500F17F76 /* MapView_iOS.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		61113A2A2CF0702900056FAF /* MapRequester.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapRequester.swift; sourceTree = "<group>"; };
@@ -100,7 +115,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				61D8C7252CEC44C6004622F7 /* MapView_iOS.framework in Frameworks */,
+				619162372D1008E500F17F76 /* MapView_iOS.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -158,6 +173,13 @@
 			path = Transform;
 			sourceTree = "<group>";
 		};
+		619162362D1008E500F17F76 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		61D8C7022CEC3E2E004622F7 /* Source */ = {
 			isa = PBXGroup;
 			children = (
@@ -195,6 +217,7 @@
 				61DA3D222CEAFFA700D15C2E /* Sources */,
 				61DA3D072CEAF7D900D15C2E /* Package.swift */,
 				61D8C7222CEC44C6004622F7 /* MapViewTests */,
+				619162362D1008E500F17F76 /* Frameworks */,
 				61DA3CE92CEAF73F00D15C2E /* Products */,
 			);
 			sourceTree = "<group>";
@@ -287,11 +310,12 @@
 				61D8C71D2CEC44C6004622F7 /* Sources */,
 				61D8C71E2CEC44C6004622F7 /* Frameworks */,
 				61D8C71F2CEC44C6004622F7 /* Resources */,
+				6191623B2D1008E500F17F76 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				61D8C7272CEC44C6004622F7 /* PBXTargetDependency */,
+				6191623A2D1008E500F17F76 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				61D8C7222CEC44C6004622F7 /* MapViewTests */,
@@ -426,10 +450,10 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		61D8C7272CEC44C6004622F7 /* PBXTargetDependency */ = {
+		6191623A2D1008E500F17F76 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 61DA3CE72CEAF73F00D15C2E /* MapView iOS */;
-			targetProxy = 61D8C7262CEC44C6004622F7 /* PBXContainerItemProxy */;
+			targetProxy = 619162392D1008E500F17F76 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -441,6 +465,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = B5VBLCZU85;
 				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = net.devswift.MapViewTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -457,6 +482,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = B5VBLCZU85;
 				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = net.devswift.MapViewTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";

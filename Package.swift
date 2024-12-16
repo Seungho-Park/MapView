@@ -4,29 +4,29 @@
 import PackageDescription
 
 let pacakge = Package(
-    name: "WMSView",
+    name: "MapView",
     platforms: [
         .iOS(.v14),
         .macOS(.v10_13)
     ],
     products: [
         .library(
-            name: "WMSView",
+            name: "MapView",
             type: .dynamic,
-            targets: ["WMSView"]
+            targets: ["MapView"]
         )
     ],
     targets: [
         .target(
-            name: "WMSView",
+            name: "MapView",
             path: "Sources",
             exclude: ["Info.plist"],
             resources: [.process("Resources")]
         ),
         .testTarget(
-            name: "WMSViewTests",
-            dependencies: ["WMSView"],
-            path: "WMSViewTests"
+            name: "MapViewTests",
+            dependencies: ["MapView"],
+            path: "MapViewTests"
         )
     ]
 )
