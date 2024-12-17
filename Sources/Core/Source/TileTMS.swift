@@ -38,7 +38,7 @@ final public class TileTMS: SourceTile {
     public var minZoom: Int { return layerType.minZoom }
     public var maxZoom: Int { return layerType.maxZoom }
     
-    public init(config: TileMapServiceConfig, projection: any Projection) {
+    public init(config: TileMapServiceConfig, projection: any Projection = EPSG3857()) {
         self.config = config
         self.projection = projection
         self.layerType = config.layer

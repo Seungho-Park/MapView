@@ -26,16 +26,11 @@ open class MapView: UIView {
     private var angle: Double = 0
     private var isAvailableRotate: Bool = false
     
-    public convenience init(config: MapConfigurable) {
+    public convenience init(map: any SourceTile) {
         self.init(frame: .zero)
         
-        if let config = config as? WMSConfig {
-            mapLayer = ImageTileLayer(source: TileWMS(config: config))
-        } else if let config = config as? TileMapServiceConfig {
-            mapLayer = ImageTileLayer(source: TileTMS(config: config, projection: EPSG3857()))
-        }
-        
-        self.zoom = config.initialZoom
+        mapLayer = ImageTileLayer(source: map)
+        self.zoom = map.config.initialZoom
         mapLayer.mapDelegate = self
         
         commit()

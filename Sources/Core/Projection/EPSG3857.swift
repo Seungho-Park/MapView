@@ -7,18 +7,18 @@
 
 import Foundation
 
-final class EPSG3857: Projection {
-    var type: CoordinateSystem
-    var tileExtent: MapExtent
-    var worldExtent: MapExtent
+final public class EPSG3857: Projection {
+    public var type: CoordinateSystem
+    public var tileExtent: MapExtent
+    public var worldExtent: MapExtent
     
-    init(type: CoordinateSystem = .epsg3857) {
+    public init(type: CoordinateSystem = .epsg3857) {
         self.type = type
         self.tileExtent = .init(minLongitude: -EPSG3857.EARTH_CIRCUMFERENCE_HALF_SIZE, minLatitude: -EPSG3857.EARTH_CIRCUMFERENCE_HALF_SIZE, maxLongitude: EPSG3857.EARTH_CIRCUMFERENCE_HALF_SIZE, maxLatitude: EPSG3857.EARTH_CIRCUMFERENCE_HALF_SIZE)
         self.worldExtent = .init(minLongitude: -180, minLatitude: -85, maxLongitude: 180, maxLatitude: 85)
     }
     
-    func convert(coord: Coordinate, to: CoordinateSystem) -> Coordinate {
+    public func convert(coord: Coordinate, to: CoordinateSystem) -> Coordinate {
         switch to {
         case .epsg3857: return coord
         case .epsg4326:
@@ -29,7 +29,7 @@ final class EPSG3857: Projection {
         }
     }
     
-    func from(coord: Coordinate, from: CoordinateSystem) -> Coordinate {
+    public func from(coord: Coordinate, from: CoordinateSystem) -> Coordinate {
         switch from {
         case .epsg4326:
             let lon = EPSG3857.EARTH_CIRCUMFERENCE_HALF_SIZE * coord.longitude / 180
