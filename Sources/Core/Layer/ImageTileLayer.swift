@@ -13,7 +13,7 @@ import AppKit
 #endif
 
 public class ImageTileLayer: CATiledLayer, TileLayer {
-    private let semaphore = DispatchSemaphore(value: 1)
+    private let dispatchGroup = DispatchGroup()
     private var requesters: [any ServiceRequester] = []
     private var renderingTiles: [(CGImage?, CGRect)] = []
     private var resolution: Double = 0
@@ -86,8 +86,8 @@ public class ImageTileLayer: CATiledLayer, TileLayer {
         else {
             return
         }
-        defer { semaphore.signal() }
-        semaphore.wait()
+        dispatchGroup.enter()
+        defer { dispatchGroup.leave() }
         
         self.resolution = resolution
         renderingTiles.removeAll()
@@ -99,16 +99,14 @@ public class ImageTileLayer: CATiledLayer, TileLayer {
     }
     
     public func manageTilePyramid(_ tiles: [any Tile]) {
-        for i in 0..<tiles.count {
-            if let tile = tiles[i] as? ImageTile {
-                MapServiceRequesterPool.shared.enqueue(tile)
-            }
+        tiles.compactMap { $0 as? ImageTile }.forEach { tile in
+            MapServiceRequesterPool.shared.enqueue(tile)
         }
     }
     
     private func notifyTile(_ tileKeys: [String]) {
-        defer { semaphore.signal() }
-        semaphore.wait()
+        dispatchGroup.enter()
+        defer { dispatchGroup.leave() }
         var tiles: [ImageTile] = []
         
         for i in 0..<tileKeys.count {
