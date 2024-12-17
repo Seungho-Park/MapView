@@ -7,7 +7,15 @@
 
 import Foundation
 
+public enum MapServiceType {
+    case wms
+    case wmts
+    case tms
+}
+
 public protocol MapConfigurable {
+    var type: MapServiceType { get }
+    
     var baseUrl: String { get }
     var corner: MapExtent.Corner { get }
     var initialZoom: Int { get }
@@ -15,6 +23,7 @@ public protocol MapConfigurable {
 }
 
 public struct WMSConfig: MapConfigurable {
+    public let type: MapServiceType = .wms
     public let baseUrl: String
     public let minZoom: Int
     public let maxZoom: Int
@@ -42,6 +51,7 @@ public struct WMSConfig: MapConfigurable {
 }
 
 public struct TileMapServiceConfig: MapConfigurable {
+    public let type: MapServiceType
     public let baseUrl: String
     public let corner: MapExtent.Corner
     public let tileSize: Double
@@ -51,12 +61,13 @@ public struct TileMapServiceConfig: MapConfigurable {
     
     // WMTS일 경우 corner 값 topLeft.
     // WMTS의 경우 좌상단이 0,0이고 TMS의 경우 좌하단이 0,0
-    public init(baseUrl: String, corner: MapExtent.Corner = .topLeft, initialZoom: Int, layer: TileMapServiceLayer, tileSize: Double = 256.0, apiKey: String? = nil) {
+    public init(type: MapServiceType, baseUrl: String, initialZoom: Int, layer: TileMapServiceLayer, tileSize: Double = 256.0, apiKey: String? = nil) {
+        self.type = type
         self.baseUrl = baseUrl
         self.initialZoom = initialZoom
         self.layer = layer
         self.tileSize = tileSize
         self.apiKey = apiKey
-        self.corner = corner
+        self.corner = type == .tms ? .bottomLeft : .topLeft
     }
 }
