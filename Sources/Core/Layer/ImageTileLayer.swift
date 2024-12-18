@@ -13,9 +13,13 @@ import AppKit
 #endif
 
 public class ImageTileLayer: CATiledLayer, TileLayer {
-    private let dispatchGroup = DispatchGroup()
+    private let dispatchQueue = DispatchQueue(label: "ImageTileLayer", qos: .userInteractive)
+    private var _renderingTiles: [(CGImage?, CGRect)] = []
+    private var renderingTiles: [(CGImage?, CGRect)] {
+        get { dispatchQueue.sync { _renderingTiles } }
+        set { dispatchQueue.sync { _renderingTiles = newValue } }
+    }
     private var requesters: [any ServiceRequester] = []
-    private var renderingTiles: [(CGImage?, CGRect)] = []
     private var resolution: Double = 0
     
     public let source: any SourceTile
@@ -86,8 +90,6 @@ public class ImageTileLayer: CATiledLayer, TileLayer {
         else {
             return
         }
-        dispatchGroup.enter()
-        defer { dispatchGroup.leave() }
         
         self.resolution = resolution
         renderingTiles.removeAll()
@@ -105,8 +107,6 @@ public class ImageTileLayer: CATiledLayer, TileLayer {
     }
     
     private func notifyTile(_ tileKeys: [String]) {
-        dispatchGroup.enter()
-        defer { dispatchGroup.leave() }
         var tiles: [ImageTile] = []
         
         for i in 0..<tileKeys.count {
@@ -152,7 +152,7 @@ public class ImageTileLayer: CATiledLayer, TileLayer {
             
             if let imageSource = CGImageSourceCreateWithData(image as CFData, nil),
                let cgImage = CGImageSourceCreateImageAtIndex(imageSource, 0, options as CFDictionary) {
-                renderingTiles.append((cgImage, tileRect))
+                self.renderingTiles.append((cgImage, tileRect))
             }
         }
     }

@@ -8,34 +8,32 @@
 import Foundation
 
 internal final class MapServiceRequesterPool: ServiceRequesterPool {
-    private let semaphore = DispatchSemaphore(value: 1)
+    private let serialQueue: DispatchQueue = .init(label: "MapServiceRequesterPool", qos: .background)
     static var shared: MapServiceRequesterPool = MapServiceRequesterPool()
     
     internal var tiles: [ImageTile] = []
     
     func contains(forKey key: String) -> Bool {
-        defer { semaphore.signal() }
-        semaphore.wait()
-        
-        return tiles.contains { tile in
-            tile.key == key
+        serialQueue.sync {
+            return tiles.contains { tile in
+                tile.key == key
+            }
         }
     }
     
     func enqueue(_ newElement: ImageTile) {
-        defer { semaphore.signal() }
-        semaphore.wait()
-        tiles.append(newElement)
+        serialQueue.sync {
+            tiles.append(newElement)
+        }
     }
     
     func dequeue() -> ImageTile? {
-        defer { semaphore.signal() }
-        semaphore.wait()
-        
-        if let _ = tiles.first {
-            return tiles.removeFirst()
+        serialQueue.sync {
+            if let _ = tiles.first {
+                return tiles.removeFirst()
+            }
+            
+            return nil
         }
-        
-        return nil
     }
 }
