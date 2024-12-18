@@ -27,7 +27,7 @@ final public class TileWMS: SourceTile {
     public var minZoom: Int { return config.minZoom }
     public var maxZoom: Int { return config.maxZoom }
     
-//    private let tileCache: TileCache = TileCache.shared
+    private let tileCache: TileCache = TileCache.shared
     private var buffer: [String: any Tile] = [:]
     
     init(config: WMSConfig, projection: any Projection = EPSG3857()) {
@@ -54,9 +54,9 @@ final public class TileWMS: SourceTile {
         let coord = TileCoordinate(z: z, x: x, y: y)
         let tileKey = getKey(coord)
         
-//        if let tile = tileCache.get(forKey: tileKey) {
-//            return tile
-//        }
+        if let tile = tileCache.get(forKey: tileKey) {
+            return tile
+        }
         
         if let tile = buffer[tileKey] {
             return tile
@@ -71,17 +71,17 @@ final public class TileWMS: SourceTile {
     }
     
     public func updateTile(forKey tileKey: String) -> (any Tile)? {
-//        if let tile = buffer.removeValue(forKey: tileKey) {
-//            tileCache.update(tile, forKey: tileKey)
-//            
-//            return tile
-//        }
+        if let tile = buffer.removeValue(forKey: tileKey) {
+            tileCache.update(tile, forKey: tileKey)
+            
+            return tile
+        }
         
-        return buffer[tileKey]
+        return nil
     }
     
     public func clear() {
-//        tileCache.clear()
+        tileCache.clear()
         buffer.removeAll()
     }
     
