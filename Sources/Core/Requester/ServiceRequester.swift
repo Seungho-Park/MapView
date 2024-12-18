@@ -11,4 +11,5 @@ public protocol ServiceRequester {
     var isActive: Bool { get set }
     
     func start(completion: @escaping CompletionHandler)
+    func stop()
 }

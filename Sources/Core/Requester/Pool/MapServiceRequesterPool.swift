@@ -8,27 +8,29 @@
 import Foundation
 
 internal final class MapServiceRequesterPool: ServiceRequesterPool {
-    private let serialQueue: DispatchQueue = .init(label: "MapServiceRequesterPool", qos: .background)
-    static var shared: MapServiceRequesterPool = MapServiceRequesterPool()
+    private let lock = NSLock()
+    static let shared: MapServiceRequesterPool = MapServiceRequesterPool()
     
-    private var _tiles: [ImageTile] = []
-    internal var tiles: [ImageTile] {
-        get { serialQueue.sync { return _tiles } }
-        set { serialQueue.sync { _tiles = newValue } }
-    }
+    internal var tiles: [ImageTile] = []
     
     func contains(forKey key: String) -> Bool {
+        lock.lock()
+        defer { lock.unlock() }
         return tiles.contains { tile in
             tile.key == key
         }
     }
     
     func enqueue(_ newElement: ImageTile) {
+        lock.lock()
+        defer { lock.unlock() }
         tiles.append(newElement)
     }
     
     func dequeue() -> ImageTile? {
-        if let _ = tiles.first {
+        lock.lock()
+        defer { lock.unlock() }
+        if !tiles.isEmpty {
             return tiles.removeFirst()
         }
             

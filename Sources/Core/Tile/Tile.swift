@@ -18,5 +18,6 @@ public protocol Tile {
     var tileState: TileState { get set }
     var tileData: TileData? { get set }
     
-    func load()-> Bool
+    func load(completion: @escaping (Bool)-> Void)
+    func load() async -> Bool
 }

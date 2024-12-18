@@ -13,12 +13,8 @@ import AppKit
 #endif
 
 public class ImageTileLayer: CATiledLayer, TileLayer {
-    private let dispatchQueue = DispatchQueue(label: "ImageTileLayer", qos: .userInteractive)
-    private var _renderingTiles: [(CGImage?, CGRect)] = []
-    private var renderingTiles: [(CGImage?, CGRect)] {
-        get { dispatchQueue.sync { _renderingTiles } }
-        set { dispatchQueue.sync { _renderingTiles = newValue } }
-    }
+    private let lock = NSLock()
+    private var renderingTiles: [(CGImage?, CGRect)] = []
     private var requesters: [any ServiceRequester] = []
     private var resolution: Double = 0
     
@@ -91,7 +87,7 @@ public class ImageTileLayer: CATiledLayer, TileLayer {
         }
         
         self.resolution = resolution
-        renderingTiles.removeAll()
+        
         screenExtent = source.getExtentForTileRange(z: level, tileRange: tileRange)
         
         let renderedTiles = prepare(screenSize: screenSize, center: center, z: level, resolution: resolution, angle: angle, extent: extent, tileRange: tileRange, overSampling: 1.0)
@@ -125,6 +121,10 @@ public class ImageTileLayer: CATiledLayer, TileLayer {
     
     private func drawTiles(_ tiles: [ImageTile], overSampling: Double = 1.0) {
         guard let screenExtent else { return }
+        lock.lock()
+        defer { lock.unlock() }
+        
+        renderingTiles.removeAll()
         
         let options: [NSString: Any] = [
             kCGImageSourceThumbnailMaxPixelSize: source.config.tileSize,

@@ -7,7 +7,7 @@
 import Foundation
 
 internal final class MapServiceRequester: ServiceRequester {
-    private static let dispatchQueue: DispatchQueue = .init(label: "net.devswift.webview.WMSRequester", qos: .utility, attributes: .concurrent)
+    private var task: Task<Void, Never>?
     public var requesterPool: any ServiceRequesterPool
     public var isActive: Bool
     
@@ -17,26 +17,29 @@ internal final class MapServiceRequester: ServiceRequester {
     }
     
     public func start(completion: @escaping CompletionHandler) {
-        MapServiceRequester.dispatchQueue.async { [weak self] in
-            Thread.current.name = "\(Self.self)"
-            
+        task = Task {
             var tileKeyList: [String] = []
-            while self?.isActive == true {
-                guard let tile = self?.requesterPool.dequeue()
-                else {
+            while self.isActive == true {
+                if let tile = self.requesterPool.dequeue() {
+                    let isLoaded = await tile.load()
+                    if isLoaded {
+                        tileKeyList.append(tile.key)
+                    }
+                } else {
                     if !tileKeyList.isEmpty {
                         completion(tileKeyList)
                         tileKeyList.removeAll()
                     }
                     
-                    Thread.sleep(forTimeInterval: 0.1)
-                    continue
-                }
-                
-                if tile.load() {
-                    tileKeyList.append(tile.key)
+                    try? await Task.sleep(nanoseconds: 100_000_000)
                 }
             }
         }
+    }
+    
+    func stop() {
+        isActive = false
+        task?.cancel()
+        task = nil
     }
 }

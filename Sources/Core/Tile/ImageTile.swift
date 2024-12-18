@@ -22,17 +22,49 @@ public final class ImageTile: Tile {
         self.tileData = tileData
     }
     
-    public func load()-> Bool {
-        guard let url = URL(string: url),
-              let data = try? Data(contentsOf: url)
+    public func load(completion: @escaping (Bool) -> Void) {
+        guard let url = URL(string: url)
+        else {
+            tileState = .error
+            tileData = nil
+            completion(false)
+            return
+        }
+        
+        URLSession.shared.dataTask(with: url) { data, response, error in
+            if let error = error {
+                self.tileState = .error
+                self.tileData = nil
+                completion(false)
+            }
+            
+            if let data = data {
+                self.tileState = data.isEmpty ? .empty : .loaded
+            } else {
+                self.tileState = .empty
+            }
+            
+            self.tileData = data
+            completion(true)
+        }.resume()
+    }
+    
+    public func load() async -> Bool {
+        guard let url = URL(string: url)
         else {
             tileState = .error
             tileData = nil
             return false
         }
-        
-        tileState = data.isEmpty ? .empty : .loaded
-        tileData = data
-        return true
+        do {
+            let (data, _) = try await URLSession.shared.data(from: url)
+            tileState = data.isEmpty ? .empty : .loaded
+            tileData = data
+            return true
+        } catch {
+            tileState = .error
+            tileData = nil
+            return false
+        }
     }
 }
