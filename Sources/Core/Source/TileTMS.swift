@@ -104,8 +104,8 @@ final public class TileTMS: SourceTile {
             parameters += "\(coord.x < 0 ? abs(coord.x + 1) : coord.x)/"
             parameters += "\(coord.y < 0 ? abs(coord.y + 1) : coord.y)"
         case .z_y_x:
-            parameters += "\(coord.y < 0 ? abs(coord.y + 1) : coord.y)"
-            parameters += "\(coord.x < 0 ? abs(coord.x + 1) : coord.x)/"
+            parameters += "\(coord.y < 0 ? abs(coord.y + 1) : coord.y)/"
+            parameters += "\(coord.x < 0 ? abs(coord.x + 1) : coord.x)"
         }
         parameters += ".\(layerType.tileType)"
         return parameters
