@@ -11,29 +11,27 @@ internal final class MapServiceRequesterPool: ServiceRequesterPool {
     private let serialQueue: DispatchQueue = .init(label: "MapServiceRequesterPool", qos: .background)
     static var shared: MapServiceRequesterPool = MapServiceRequesterPool()
     
-    internal var tiles: [ImageTile] = []
+    private var _tiles: [ImageTile] = []
+    internal var tiles: [ImageTile] {
+        get { serialQueue.sync { return _tiles } }
+        set { serialQueue.sync { _tiles = newValue } }
+    }
     
     func contains(forKey key: String) -> Bool {
-        serialQueue.sync {
-            return tiles.contains { tile in
-                tile.key == key
-            }
+        return tiles.contains { tile in
+            tile.key == key
         }
     }
     
     func enqueue(_ newElement: ImageTile) {
-        serialQueue.sync {
-            tiles.append(newElement)
-        }
+        tiles.append(newElement)
     }
     
     func dequeue() -> ImageTile? {
-        serialQueue.sync {
-            if let _ = tiles.first {
-                return tiles.removeFirst()
-            }
-            
-            return nil
+        if let _ = tiles.first {
+            return tiles.removeFirst()
         }
+            
+        return nil
     }
 }

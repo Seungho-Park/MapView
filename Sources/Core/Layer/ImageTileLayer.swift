@@ -63,8 +63,7 @@ public class ImageTileLayer: CATiledLayer, TileLayer {
         ctx.translateBy(x: layerRect.minX, y: layerRect.maxY)
         ctx.scaleBy(x: 1, y: -1)
         
-        //Empty Background Color
-        ctx.setFillColor(UIColor(red: 52/255, green: 58/255, blue: 64/255, alpha: 1).cgColor)
+        ctx.setFillColor(UIColor(resource: .init(name: "mapBackground", bundle: .MapView)).cgColor)
         ctx.fill([ctx.boundingBoxOfClipPath])
         
         for i in 0..<renderingTiles.count {

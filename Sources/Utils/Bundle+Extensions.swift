@@ -8,11 +8,11 @@
 import Foundation
 
 public extension Bundle {
-    static var WMSView: Bundle {
+    static var MapView: Bundle {
         #if SWIFT_PACKAGE
         return Bundle.module
         #else
-        return Bundle(identifier: "net.devswift.WMSView")!
+        return Bundle(identifier: "net.devswift.MapView")!
         #endif
     }
 }

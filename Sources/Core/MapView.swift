@@ -56,31 +56,26 @@ open class MapView: UIView {
     open override func draw(_ layer: CALayer, in ctx: CGContext) {
         ctx.clear(layer.frame)
         
+        ctx.saveGState()
         switch mapState {
         case .move(let downPoint, let movePoint):
             let moveX = movePoint.x - downPoint.x
             let moveY = movePoint.y - downPoint.y
             
-            ctx.saveGState()
             ctx.translateBy(x: moveX, y: moveY)
-            mapLayer.render(in: ctx)
-            ctx.restoreGState()
         case .zoom(let startDistance, let moveDistance):
             guard let moveDistance = moveDistance else { break }
             let scaleRate = max(0.5, min(moveDistance / startDistance, 2.0))
             
-            ctx.saveGState()
             ctx.translateBy(x: layer.frame.midX, y: layer.frame.midY)
             ctx.scaleBy(x: scaleRate, y: scaleRate)
             ctx.translateBy(x: -layer.frame.midX, y: -layer.frame.midY)
-            mapLayer.render(in: ctx)
-            ctx.restoreGState()
         case .none:
             apply()
             renderFrame()
-            
-            mapLayer.render(in: ctx)
         }
+        
+        mapLayer.render(in: ctx)
     }
     
     func worldToPixel(coord: Coordinate)-> CGPoint {
