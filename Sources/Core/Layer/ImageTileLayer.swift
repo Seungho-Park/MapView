@@ -46,8 +46,6 @@ public class ImageTileLayer: CATiledLayer, TileLayer {
     }
     
     public override func render(in ctx: CGContext) {
-        print("\(#function)")
-        
         let layerRect = CGRect(
             origin: .init(x: tileTransform.get(4), y: tileTransform.get(5)),
             size: .init(width: size.width * tileTransform.get(0), height: size.height * tileTransform.get(3))
@@ -64,11 +62,13 @@ public class ImageTileLayer: CATiledLayer, TileLayer {
             let (tile, rect) = renderingTiles[i]
             if let tile = tile {
                 let rect = CGRect(
-                    x: rect.origin.x,
-                    y: layerRect.height - rect.origin.y - rect.height,
-                    width: rect.width,
-                    height: rect.height
+                    x: round(rect.origin.x) - 0.5,
+                    y: round(layerRect.height - rect.origin.y - rect.height) - 0.5,
+                    width: rect.width + 0.5,
+                    height: rect.height + 0.5
                 )
+                
+                print(rect)
                 
                 ctx.draw(tile, in: rect)
             }
