@@ -68,8 +68,6 @@ public class ImageTileLayer: CATiledLayer, TileLayer {
                     height: rect.height + 0.5
                 )
                 
-                print(rect)
-                
                 ctx.draw(tile, in: rect)
             }
         }

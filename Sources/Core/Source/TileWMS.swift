@@ -30,7 +30,7 @@ final public class TileWMS: SourceTile {
     private let tileCache: TileCache = TileCache.shared
     private var buffer: [String: any Tile] = [:]
     
-    init(config: WMSConfig, projection: any Projection = EPSG3857()) {
+    public init(config: WMSConfig, projection: any Projection = EPSG3857()) {
         self.config = config
         self.projection = projection
     }

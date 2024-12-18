@@ -7,6 +7,11 @@
 
 import Foundation
 
+public enum TileMapServiceParameterType {
+    case z_x_y
+    case z_y_x
+}
+
 public enum MapServiceType {
     case wms
     case wmts
@@ -57,17 +62,20 @@ public struct TileMapServiceConfig: MapConfigurable {
     public let tileSize: Double
     public let initialZoom: Int
     public let layer: TileMapServiceLayer
+    public let parameterType: TileMapServiceParameterType
     public let apiKey: String?
     
     // WMTS일 경우 corner 값 topLeft.
     // WMTS의 경우 좌상단이 0,0이고 TMS의 경우 좌하단이 0,0
-    public init(type: MapServiceType, baseUrl: String, initialZoom: Int, layer: TileMapServiceLayer, tileSize: Double = 256.0, apiKey: String? = nil) {
+    // VWorld는 tms일 때, 좌상단을 bottomLeft로, OpenStreetMap은 tms일 때도 좌상단을 topLeft로 하네?
+    public init(type: MapServiceType, baseUrl: String, initialZoom: Int, layer: TileMapServiceLayer, parameterType: TileMapServiceParameterType, corner: MapExtent.Corner = .topLeft, tileSize: Double = 256.0, apiKey: String? = nil) {
         self.type = type
         self.baseUrl = baseUrl
         self.initialZoom = initialZoom
         self.layer = layer
+        self.parameterType = parameterType
         self.tileSize = tileSize
         self.apiKey = apiKey
-        self.corner = type == .tms ? .bottomLeft : .topLeft
+        self.corner = corner
     }
 }

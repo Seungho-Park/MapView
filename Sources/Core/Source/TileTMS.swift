@@ -90,12 +90,23 @@ final public class TileTMS: SourceTile {
         tileBuffer.removeAll()
     }
     
+    //VWorld일 때는 {z}/{y}/{x}.확장자
+    //OpenStreetMap은 {z}/{x}/{y}인데...
     public func getFixedTileURL(_ coord: TileCoordinate, pixelRatio: Double) -> String {
         var parameters: String = config.apiKey != nil ? "\(config.apiKey!)/" : ""
-        parameters += "\(layerType.layer)/"
+        if !layerType.layer.isEmpty {
+            parameters += "\(layerType.layer)/"
+        }
         parameters += "\(abs(coord.z))/"
-        parameters += "\(coord.y < 0 ? abs(coord.y + 1) : coord.y)/"
-        parameters += "\(coord.x < 0 ? abs(coord.x + 1) : coord.x)"
+        
+        switch config.parameterType {
+        case .z_x_y:
+            parameters += "\(coord.x < 0 ? abs(coord.x + 1) : coord.x)/"
+            parameters += "\(coord.y < 0 ? abs(coord.y + 1) : coord.y)"
+        case .z_y_x:
+            parameters += "\(coord.y < 0 ? abs(coord.y + 1) : coord.y)"
+            parameters += "\(coord.x < 0 ? abs(coord.x + 1) : coord.x)/"
+        }
         parameters += ".\(layerType.tileType)"
         return parameters
     }
