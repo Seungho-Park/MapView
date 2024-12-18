@@ -50,7 +50,6 @@ public final class ImageTile: Tile {
     }
     
     public func load() async -> Bool {
-        print(url)
         guard let url = URL(string: url)
         else {
             tileState = .error
