@@ -53,8 +53,6 @@ public class ImageTileLayer: CATiledLayer, TileLayer {
             size: .init(width: size.width * tileTransform.get(0), height: size.height * tileTransform.get(3))
         )
         
-        let renderingTiles = renderingTiles
-        
         ctx.saveGState()
         ctx.translateBy(x: layerRect.minX, y: layerRect.maxY)
         ctx.scaleBy(x: 1, y: -1)
@@ -87,6 +85,7 @@ public class ImageTileLayer: CATiledLayer, TileLayer {
         }
         
         self.resolution = resolution
+        renderingTiles.removeAll()
         
         screenExtent = source.getExtentForTileRange(z: level, tileRange: tileRange)
         
@@ -123,8 +122,6 @@ public class ImageTileLayer: CATiledLayer, TileLayer {
         guard let screenExtent else { return }
         lock.lock()
         defer { lock.unlock() }
-        
-        renderingTiles.removeAll()
         
         let options: [NSString: Any] = [
             kCGImageSourceThumbnailMaxPixelSize: source.config.tileSize,

@@ -60,9 +60,17 @@ final public class TileTMS: SourceTile {
     public func getTile(_ z: Int, _ x: Int, _ y: Int, _ pixelRatio: Double) -> (any Tile)? {
         let coord = TileCoordinate(z: z, x: x, y: y)
         let tileKey = getKey(coord)
-        if let tile = tileCache.get(forKey: tileKey) ?? tileBuffer[tileKey] ?? createTile(tileCoord: coord, pixelRatio: pixelRatio) {
-            tileBuffer.updateValue(tile, forKey: tileKey)
+        
+        if let tile = tileCache.get(forKey: tileKey) {
             return tile
+        }
+        
+        if let tile = tileBuffer[tileKey] {
+            return tile
+        }
+        
+        if let tile = createTile(tileCoord: coord, pixelRatio: pixelRatio) {
+            tileBuffer.updateValue(tile, forKey: tileKey)
         }
         
         return nil
