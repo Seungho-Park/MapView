@@ -21,20 +21,7 @@ final public class TileTMS: SourceTile {
     
     public let config: TileMapServiceConfig
     public var projection: any Projection
-    public lazy var resolutions: ResolutionArray = {
-        let extent = projection.tileExtent
-        let maxResolution = max(extent.width / config.tileSize, extent.height / config.tileSize)
-        
-        let length = maxZoom + 1
-        
-        let resolutions = ResolutionArray()
-        for i in 0..<length {
-            resolutions.add(maxResolution / pow(2, Double(i)))
-        }
-        
-        resolutions.sort()
-        return resolutions
-    }()
+    public lazy var resolutions: ResolutionArray = calculateResolutions()
     
     public var minZoom: Int { return layerType.minZoom }
     public var maxZoom: Int { return layerType.maxZoom }

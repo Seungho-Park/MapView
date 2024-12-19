@@ -9,20 +9,7 @@ import Foundation
 
 final public class TileWMS: SourceTile {
     private let lock = NSLock()
-    public lazy var resolutions: ResolutionArray = {
-        let extent = projection.tileExtent
-        let maxResolution = max(extent.width / config.tileSize, extent.height / config.tileSize)
-        
-        let length = config.maxZoom + 1
-        
-        let resolutions = ResolutionArray()
-        for i in 0..<length {
-            resolutions.add(maxResolution / pow(2, Double(i)))
-        }
-        
-        resolutions.sort()
-        return resolutions
-    }()
+    public lazy var resolutions: ResolutionArray = calculateResolutions()
     public var config: WMSConfig
     public var projection: any Projection
     public var minZoom: Int { return config.minZoom }

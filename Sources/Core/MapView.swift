@@ -54,9 +54,6 @@ open class MapView: UIView {
     }
     
     open override func draw(_ layer: CALayer, in ctx: CGContext) {
-        self.mapLayer.contents = nil
-        ctx.clear(layer.frame)
-        
         ctx.saveGState()
         switch mapState {
         case .move(let downPoint, let movePoint):

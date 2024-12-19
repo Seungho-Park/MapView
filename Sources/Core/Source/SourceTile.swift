@@ -139,4 +139,18 @@ public extension SourceTile {
             maxLatitude: origin.latitude + Double(tileRange.maxY + 1) * config.tileSize * resolution
         )
     }
+    
+    internal func calculateResolutions() -> ResolutionArray {
+        let extent = projection.tileExtent
+        let maxResolution = max(extent.width / config.tileSize, extent.height / config.tileSize)
+        
+        let length = maxZoom + 1
+        let resolutions = ResolutionArray()
+        
+        for i in 0..<length {
+            resolutions.add(maxResolution / pow(2, Double(i)))
+        }
+        resolutions.sort()
+        return resolutions
+    }
 }
