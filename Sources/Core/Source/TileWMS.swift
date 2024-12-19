@@ -8,6 +8,7 @@
 import Foundation
 
 final public class TileWMS: SourceTile {
+    private let lock = NSLock()
     public lazy var resolutions: ResolutionArray = {
         let extent = projection.tileExtent
         let maxResolution = max(extent.width / config.tileSize, extent.height / config.tileSize)
@@ -58,6 +59,9 @@ final public class TileWMS: SourceTile {
             return tile
         }
         
+        lock.lock()
+        defer { lock.unlock() }
+        
         if let tile = buffer[tileKey] {
             return tile
         }
@@ -71,6 +75,8 @@ final public class TileWMS: SourceTile {
     }
     
     public func updateTile(forKey tileKey: String) -> (any Tile)? {
+        lock.lock()
+        defer { lock.unlock() }
         if let tile = buffer.removeValue(forKey: tileKey) {
             tileCache.update(tile, forKey: tileKey)
             
@@ -81,6 +87,8 @@ final public class TileWMS: SourceTile {
     }
     
     public func clear() {
+        lock.lock()
+        defer { lock.unlock() }
         tileCache.clear()
         buffer.removeAll()
     }

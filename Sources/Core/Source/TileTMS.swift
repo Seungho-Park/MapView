@@ -14,6 +14,7 @@ public protocol TileMapServiceLayer {
 }
 
 final public class TileTMS: SourceTile {
+    private let lock = NSLock()
     private let tileCache = TileCache.shared
     private var tileBuffer: [String: any Tile] = [:]
     private var layerType: TileMapServiceLayer!
@@ -65,6 +66,8 @@ final public class TileTMS: SourceTile {
             return tile
         }
         
+        lock.lock()
+        defer { lock.unlock() }
         if let tile = tileBuffer[tileKey] {
             return tile
         }
@@ -77,6 +80,8 @@ final public class TileTMS: SourceTile {
     }
     
     public func updateTile(forKey tileKey: String) -> (any Tile)? {
+        lock.lock()
+        defer { lock.unlock() }
         if let tile = tileBuffer.removeValue(forKey: tileKey) {
             tileCache.update(tile, forKey: tileKey)
             return tile
