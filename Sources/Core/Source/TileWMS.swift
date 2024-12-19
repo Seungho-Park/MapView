@@ -93,11 +93,11 @@ final public class TileWMS: SourceTile {
         parameters.updateValue(String(format: "%.0f", config.tileSize), forKey: "HEIGHT")
         parameters.updateValue(config.requestType, forKey: "REQUEST")
         parameters.updateValue(config.format, forKey: "FORMAT")
-        parameters.updateValue(projection.type.rawValue, forKey: "CRS")
+        parameters.updateValue(projection.type.rawValue, forKey: config.version == "1.3.0" ? "CRS" : "SRS")
         
         switch projection.type {
         case .epsg3857:
-            parameters.updateValue("\(extent.minLatitude),\(extent.minLongitude),\(extent.maxLatitude),\(extent.maxLongitude)", forKey: "BBOX")
+            parameters.updateValue("\(extent.joined(","))", forKey: "BBOX")
         case .epsg4326:
             let minCoord = projection.convert(coord: .init(latitude: extent.minLatitude, longitude: extent.minLongitude), to: .epsg4326)
             let maxCoord = projection.convert(coord: .init(latitude: extent.maxLatitude, longitude: extent.maxLongitude), to: .epsg4326)
