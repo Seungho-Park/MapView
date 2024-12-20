@@ -5,7 +5,11 @@
 //  Created by 박승호 on 12/15/24.
 //
 import Foundation
+#if canImport(UIKit)
 import UIKit
+#elseif canImport(AppKit)
+import AppKit
+#endif
 
 internal enum MapState {
     case none
@@ -13,7 +17,17 @@ internal enum MapState {
     case zoom(startDistance: Double, currentDistance: Double?)
 }
 
-open class MapView: UIView {
+#if canImport(UIKit)
+open class View: UIView {
+    
+}
+#elseif canImport(AppKit)
+open class View: NSView {
+    
+}
+#endif
+
+open class MapView: View {
     private var mapLayer: (any TileLayer)!
     private var mapState: MapState = .none
     private let lonlatToPixelTransform = Transform()

@@ -7,7 +7,7 @@ let pacakge = Package(
     name: "MapView",
     platforms: [
         .iOS(.v14),
-        .macOS(.v10_13)
+        .macOS(.v10_15)
     ],
     products: [
         .library(

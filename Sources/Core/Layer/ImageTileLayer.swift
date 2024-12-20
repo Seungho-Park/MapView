@@ -6,11 +6,8 @@
 //
 
 import Foundation
-#if canImport(UIKit)
-import UIKit
-#elseif canImport(AppKit)
-import AppKit
-#endif
+import QuartzCore
+import CoreImage
 
 public class ImageTileLayer: CATiledLayer, TileLayer {
     private let lock = NSLock()
@@ -55,7 +52,7 @@ public class ImageTileLayer: CATiledLayer, TileLayer {
         ctx.translateBy(x: layerRect.minX, y: layerRect.maxY)
         ctx.scaleBy(x: 1, y: -1)
         
-        ctx.setFillColor(UIColor(resource: .init(name: "mapBackground", bundle: .MapView)).cgColor)
+        ctx.setFillColor(CGColor(red: 52/255, green: 58/255, blue: 64/255, alpha: 1))
         ctx.fill([ctx.boundingBoxOfClipPath])
         
         for i in 0..<renderingTiles.count {
