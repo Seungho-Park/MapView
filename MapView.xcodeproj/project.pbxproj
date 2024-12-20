@@ -34,7 +34,7 @@
 		614850192D1096410013DC06 /* MapServiceRequester.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapServiceRequester.swift; sourceTree = "<group>"; };
 		6148501A2D1096410013DC06 /* ServiceRequester.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceRequester.swift; sourceTree = "<group>"; };
 		614850332D1097030013DC06 /* MapView_iOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MapView_iOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		614850A52D12E8F70013DC06 /* colors.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = colors.xcassets; sourceTree = "<group>"; };
+		614850A52D12E8F70013DC06 /* Colors.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Colors.xcassets; sourceTree = "<group>"; };
 		617D45EF2CEC4E340064D298 /* TileCoordinate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TileCoordinate.swift; sourceTree = "<group>"; };
 		617D45F12CEC52B30064D298 /* ImageTile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageTile.swift; sourceTree = "<group>"; };
 		61D483C32CF1B48000E52922 /* Comparable+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Comparable+Extensions.swift"; sourceTree = "<group>"; };
@@ -199,7 +199,7 @@
 		61DA3D232CEAFFAD00D15C2E /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				614850A52D12E8F70013DC06 /* colors.xcassets */,
+				614850A52D12E8F70013DC06 /* Colors.xcassets */,
 				61DA3D152CEAFEE400D15C2E /* Images.xcassets */,
 			);
 			path = Resources;
