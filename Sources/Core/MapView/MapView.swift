@@ -18,18 +18,14 @@ internal enum MapState {
 }
 
 #if canImport(UIKit)
-open class View: UIView {
-    
-}
+public typealias MapPlatformView = UIView
 #elseif canImport(AppKit)
-open class View: NSView {
-    
-}
+public typealias MapPlatformView = NSView
 #endif
 
-open class MapView: View {
+open class MapView: MapPlatformView {
     private var mapLayer: (any TileLayer)!
-    private var mapState: MapState = .none
+    internal var mapState: MapState = .none
     private let lonlatToPixelTransform = Transform()
     private let pixelToLonlatTransform = Transform()
     
@@ -52,9 +48,16 @@ open class MapView: View {
     
     private override init(frame: CGRect) {
         super.init(frame: frame)
-        self.contentMode = .redraw
         self.translatesAutoresizingMaskIntoConstraints = false
         self.clipsToBounds = true
+        
+        #if canImport(UIKit)
+        self.contentMode = .redraw
+        #elseif canImport(AppKit)
+        self.wantsLayer = true
+        self.layer = CALayer()
+        self.layer?.delegate = self
+        #endif
     }
     
     required public init?(coder: NSCoder) {
@@ -64,30 +67,43 @@ open class MapView: View {
     private func commit() {
         mapLayer.isOpaque = false
         
-        self.layer.addSublayer(mapLayer)
+        invalidate()
     }
     
+    #if canImport(UIKit)
     open override func draw(_ layer: CALayer, in ctx: CGContext) {
-        ctx.saveGState()
+        render(layer, context: ctx)
+    }
+    #endif
+    
+    private func render(_ layer: CALayer?, context: CGContext) {
+        guard let layer else { return }
+        context.saveGState()
         switch mapState {
         case .move(let downPoint, let movePoint):
             let moveX = movePoint.x - downPoint.x
-            let moveY = movePoint.y - downPoint.y
             
-            ctx.translateBy(x: moveX, y: moveY)
+            #if !os(macOS)
+            let moveY = movePoint.y - downPoint.y
+            #else
+            let moveY = downPoint.y - movePoint.y
+            #endif
+            
+            context.translateBy(x: moveX, y: moveY)
         case .zoom(let startDistance, let moveDistance):
             guard let moveDistance = moveDistance else { break }
             let scaleRate = max(0.5, min(moveDistance / startDistance, 2.0))
             
-            ctx.translateBy(x: layer.frame.midX, y: layer.frame.midY)
-            ctx.scaleBy(x: scaleRate, y: scaleRate)
-            ctx.translateBy(x: -layer.frame.midX, y: -layer.frame.midY)
+            context.translateBy(x: layer.frame.midX, y: layer.frame.midY)
+            context.scaleBy(x: scaleRate, y: scaleRate)
+            context.translateBy(x: -layer.frame.midX, y: -layer.frame.midY)
         case .none:
             apply()
             renderFrame()
         }
         
-        mapLayer.render(in: ctx)
+        mapLayer.render(in: context)
+        context.restoreGState()
     }
     
     func worldToPixel(coord: Coordinate)-> CGPoint {
@@ -119,7 +135,7 @@ open class MapView: View {
             renderFrame()
         }
         
-        self.layer.setNeedsDisplay()
+        invalidate()
     }
     
     func zoomOut() {
@@ -130,7 +146,7 @@ open class MapView: View {
             renderFrame()
         }
         
-        self.layer.setNeedsDisplay()
+        invalidate()
     }
     
     private func apply() {
@@ -186,91 +202,37 @@ open class MapView: View {
         let newLevel = max(oldLevel + delta, 0)
         return resolution / pow(zoomFactor, Double(newLevel))
     }
+    
+    func invalidate() {
+        #if !os(macOS)
+        self.layer.setNeedsDisplay()
+        #else
+        self.layer?.setNeedsDisplay()
+        #endif
+    }
 }
 
 // MARK: - Touch Event
-public extension MapView {
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        guard let allTouches = event?.allTouches, (1...2).contains(allTouches.count) else { return }
-        let touchPoints = allTouches.map { $0.location(in: self) }
-        
-        if allTouches.count == 1 {
-            mapState = .move(startPoint: touchPoints[0], currentPoint: touchPoints[0])
-        } else {
-            let distance = calculateDistance(between: touchPoints[0], and: touchPoints[1])
-            mapState = .zoom(startDistance: distance, currentDistance: nil)
-        }
-    }
-    
-    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-        guard let allTouches = event?.allTouches, (1...2).contains(allTouches.count) else { return }
-        let touchPoints = allTouches.map { $0.location(in: self) }
-        
-        switch mapState {
-        case .none:
-            break
-        case .move(let startPoint, let currentPoint):
-            if allTouches.count > 1 {
-                let distance = calculateDistance(between: touchPoints[0], and: touchPoints[1])
-                mapState = .zoom(startDistance: distance, currentDistance: distance)
-            } else {
-                let newPoint = touchPoints[0]
-                if isMoveMapAction(from: currentPoint, to: newPoint) {
-                    mapState = .move(startPoint: startPoint, currentPoint: newPoint)
-                    self.layer.setNeedsDisplay()
-                }
-            }
-        case .zoom(let startDistance, _):
-            guard touchPoints.count == 2 else { break }
-            let distance = calculateDistance(between: touchPoints[0], and: touchPoints[1])
-            mapState = .zoom(startDistance: startDistance, currentDistance: distance)
-            self.layer.setNeedsDisplay()
-        }
-    }
-    
-    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        guard let allTouches = event?.allTouches, (1...2).contains(allTouches.count) else { return }
-        let touchPoints = allTouches.map { $0.location(in: self) }
-        
-        switch mapState {
-        case .none:
-            break
-        case .move(let startPoint, _):
-            guard allTouches.count == 1 else { break }
-            let endPoint = touchPoints[0]
-            
-            if isMoveMapAction(from: startPoint, to: endPoint) {
-                handleMoveMap(from: startPoint, to: endPoint)
-            }
-        case .zoom(let startDistance, let currentDistance):
-            guard let currentDistance = currentDistance else { break }
-            
-            let scaleRate = currentDistance / startDistance
-            handleZoom(with: scaleRate)
-        }
-        
-        mapState = .none
-    }
-    
-    override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
-        mapState = .none
-        self.layer.setNeedsDisplay()
-    }
-    
+internal extension MapView {
     // MARK: - Handle Methods
-    private func calculateDistance(between point1: CGPoint, and point2: CGPoint) -> Double {
+    internal func calculateDistance(between point1: CGPoint, and point2: CGPoint) -> Double {
         let dx = point1.x - point2.x
         let dy = point1.y - point2.y
         return sqrt(dx * dx + dy * dy)
     }
     
-    private func isMoveMapAction(from point1: CGPoint, to point2: CGPoint, threshold: CGFloat = 5) -> Bool {
+    internal func isMoveMapAction(from point1: CGPoint, to point2: CGPoint, threshold: CGFloat = 5) -> Bool {
         return calculateDistance(between: point1, and: point2) > threshold
     }
     
-    private func handleMoveMap(from startPoint: CGPoint, to endPoint: CGPoint) {
+    internal func handleMoveMap(from startPoint: CGPoint, to endPoint: CGPoint) {
         let deltaX = endPoint.x - startPoint.x
+        
+        #if !os(macOS)
         let deltaY = endPoint.y - startPoint.y
+        #else
+        let deltaY = startPoint.y - endPoint.y
+        #endif
         
         var centerXY = worldToPixel(coord: centerCoord)
         centerXY.x -= deltaX
@@ -278,10 +240,10 @@ public extension MapView {
         
         centerCoord = pixelToWorld(point: centerXY)
         renderFrame()
-        self.layer.setNeedsDisplay()
+        invalidate()
     }
     
-    private func handleZoom(with scaleRate: Double) {
+    internal func handleZoom(with scaleRate: Double) {
         if scaleRate > 1 {
             zoomIn()
         } else if scaleRate < 1 {
@@ -290,10 +252,25 @@ public extension MapView {
     }
 }
 
+#if canImport(AppKit)
+extension MapView: CALayerDelegate {
+    open override func makeBackingLayer() -> CALayer {
+        let layer = CALayer()
+        layer.needsDisplayOnBoundsChange = true
+        layer.delegate = self
+        return layer
+    }
+    
+    public func draw(_ layer: CALayer, in ctx: CGContext) {
+        render(layer, context: ctx)
+    }
+}
+#endif
+
 extension MapView: TileLayerDelegate {
     public func refreshLayer() {
         DispatchQueue.main.async {
-            self.layer.setNeedsDisplay()
+            self.invalidate()
         }
     }
 }

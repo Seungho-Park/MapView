@@ -69,6 +69,10 @@
 		6148526A2D1595740013DC06 /* Dictionary+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61DA3D2E2CEB0C4300D15C2E /* Dictionary+Extensions.swift */; };
 		6148526B2D1595740013DC06 /* Double+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61DA3D2C2CEB0BF500D15C2E /* Double+Extensions.swift */; };
 		6148526C2D1595740013DC06 /* Bundle+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61DA3D252CEB000900D15C2E /* Bundle+Extensions.swift */; };
+		6148533A2D15EECC0013DC06 /* UIMapViewTouchDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 614853392D15EEC40013DC06 /* UIMapViewTouchDelegate.swift */; };
+		6148533B2D15EECC0013DC06 /* UIMapViewTouchDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 614853392D15EEC40013DC06 /* UIMapViewTouchDelegate.swift */; };
+		6148533D2D15EF210013DC06 /* NSMapViewTouchDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6148533C2D15EF1A0013DC06 /* NSMapViewTouchDelegate.swift */; };
+		6148533E2D15EF210013DC06 /* NSMapViewTouchDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6148533C2D15EF1A0013DC06 /* NSMapViewTouchDelegate.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -101,6 +105,8 @@
 		614850332D1097030013DC06 /* MapView.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MapView.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		614850A52D12E8F70013DC06 /* Colors.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Colors.xcassets; sourceTree = "<group>"; };
 		614852172D158E6E0013DC06 /* MapView.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MapView.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		614853392D15EEC40013DC06 /* UIMapViewTouchDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIMapViewTouchDelegate.swift; sourceTree = "<group>"; };
+		6148533C2D15EF1A0013DC06 /* NSMapViewTouchDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSMapViewTouchDelegate.swift; sourceTree = "<group>"; };
 		617D45EF2CEC4E340064D298 /* TileCoordinate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TileCoordinate.swift; sourceTree = "<group>"; };
 		617D45F12CEC52B30064D298 /* ImageTile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageTile.swift; sourceTree = "<group>"; };
 		61D483C32CF1B48000E52922 /* Comparable+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Comparable+Extensions.swift"; sourceTree = "<group>"; };
@@ -200,6 +206,24 @@
 			path = Requester;
 			sourceTree = "<group>";
 		};
+		614853162D15E7B80013DC06 /* MapView */ = {
+			isa = PBXGroup;
+			children = (
+				614853172D15E7BE0013DC06 /* Extensions */,
+				61255BC72D0ED7280018139E /* MapView.swift */,
+			);
+			path = MapView;
+			sourceTree = "<group>";
+		};
+		614853172D15E7BE0013DC06 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				6148533C2D15EF1A0013DC06 /* NSMapViewTouchDelegate.swift */,
+				614853392D15EEC40013DC06 /* UIMapViewTouchDelegate.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
 		619162362D1008E500F17F76 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -293,8 +317,8 @@
 		61DA3D732CEB115700D15C2E /* Core */ = {
 			isa = PBXGroup;
 			children = (
+				614853162D15E7B80013DC06 /* MapView */,
 				6148501B2D1096410013DC06 /* Requester */,
-				61255BC72D0ED7280018139E /* MapView.swift */,
 				61255BC42D0ED1EA0018139E /* Transform */,
 				61113A3B2CF0DCE200056FAF /* Array */,
 				61D8C70C2CEC4213004622F7 /* Cache */,
@@ -489,11 +513,13 @@
 				6148523D2D15911E0013DC06 /* MapView.swift in Sources */,
 				6148523E2D15911E0013DC06 /* Transform.swift in Sources */,
 				6148523F2D15911E0013DC06 /* ResolutionArray.swift in Sources */,
+				6148533E2D15EF210013DC06 /* NSMapViewTouchDelegate.swift in Sources */,
 				614852402D15911E0013DC06 /* CacheWrapper.swift in Sources */,
 				614852412D15911E0013DC06 /* MapCache.swift in Sources */,
 				614852422D15911E0013DC06 /* TileCache.swift in Sources */,
 				614852432D15911E0013DC06 /* TileRange.swift in Sources */,
 				614852442D15911E0013DC06 /* ImageTile.swift in Sources */,
+				6148533A2D15EECC0013DC06 /* UIMapViewTouchDelegate.swift in Sources */,
 				614852452D15911E0013DC06 /* TileCoordinate.swift in Sources */,
 				614852462D15911E0013DC06 /* Tile.swift in Sources */,
 				614852472D15911E0013DC06 /* EPSG3857.swift in Sources */,
@@ -525,11 +551,13 @@
 				614852242D15910D0013DC06 /* MapView.swift in Sources */,
 				614852252D15910D0013DC06 /* Transform.swift in Sources */,
 				614852262D15910D0013DC06 /* ResolutionArray.swift in Sources */,
+				6148533D2D15EF210013DC06 /* NSMapViewTouchDelegate.swift in Sources */,
 				614852272D15910D0013DC06 /* CacheWrapper.swift in Sources */,
 				614852282D15910D0013DC06 /* MapCache.swift in Sources */,
 				614852292D15910D0013DC06 /* TileCache.swift in Sources */,
 				6148522A2D15910D0013DC06 /* TileRange.swift in Sources */,
 				6148522B2D15910D0013DC06 /* ImageTile.swift in Sources */,
+				6148533B2D15EECC0013DC06 /* UIMapViewTouchDelegate.swift in Sources */,
 				6148522C2D15910D0013DC06 /* TileCoordinate.swift in Sources */,
 				6148522D2D15910D0013DC06 /* Tile.swift in Sources */,
 				6148522E2D15910D0013DC06 /* EPSG3857.swift in Sources */,
@@ -639,7 +667,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = YES;
-				DEFINES_MODULE = YES;
+				DEFINES_MODULE = NO;
 				DEVELOPMENT_TEAM = "";
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
@@ -676,7 +704,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = YES;
-				DEFINES_MODULE = YES;
+				DEFINES_MODULE = NO;
 				DEVELOPMENT_TEAM = "";
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;

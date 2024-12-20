@@ -141,7 +141,6 @@ public extension SourceTile {
     }
     
     internal func calculateResolutions() -> ResolutionArray {
-        let extent = projection.tileExtent
         let maxResolution = max(extent.width / config.tileSize, extent.height / config.tileSize)
         
         let length = maxZoom + 1
