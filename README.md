@@ -18,3 +18,16 @@
 <td>WMTS/TMS</td>
 </tr>
 </table>
+
+## Installation
+### Swift Package Manager
+Add dependency:
+
+```Swift
+.package(url: "https://github.com/Seungho-Park/MapView.git", from: "0.0.1")
+```
+
+### Carthage
+```Swift
+github "Seungho-Park/MapView"
+```
