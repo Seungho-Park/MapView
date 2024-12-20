@@ -33,7 +33,7 @@
 		614850172D1096410013DC06 /* ServiceRequesterPool.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceRequesterPool.swift; sourceTree = "<group>"; };
 		614850192D1096410013DC06 /* MapServiceRequester.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapServiceRequester.swift; sourceTree = "<group>"; };
 		6148501A2D1096410013DC06 /* ServiceRequester.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceRequester.swift; sourceTree = "<group>"; };
-		614850332D1097030013DC06 /* MapView_iOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MapView_iOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		614850332D1097030013DC06 /* MapView.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MapView.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		614850A52D12E8F70013DC06 /* Colors.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Colors.xcassets; sourceTree = "<group>"; };
 		617D45EF2CEC4E340064D298 /* TileCoordinate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TileCoordinate.swift; sourceTree = "<group>"; };
 		617D45F12CEC52B30064D298 /* ImageTile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageTile.swift; sourceTree = "<group>"; };
@@ -180,7 +180,7 @@
 			isa = PBXGroup;
 			children = (
 				61D8C7212CEC44C6004622F7 /* MapViewTests.xctest */,
-				614850332D1097030013DC06 /* MapView_iOS.framework */,
+				614850332D1097030013DC06 /* MapView.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -275,7 +275,7 @@
 			packageProductDependencies = (
 			);
 			productName = "MapView iOS";
-			productReference = 614850332D1097030013DC06 /* MapView_iOS.framework */;
+			productReference = 614850332D1097030013DC06 /* MapView.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 		61D8C7202CEC44C6004622F7 /* MapViewTests */ = {
@@ -310,6 +310,7 @@
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1610;
 				LastUpgradeCheck = 1620;
+				ORGANIZATIONNAME = MapView;
 				TargetAttributes = {
 					614850322D1097030013DC06 = {
 						CreatedOnToolsVersion = 16.2;
@@ -401,7 +402,7 @@
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu17 gnu++20";
 				PRODUCT_BUNDLE_IDENTIFIER = net.devswift.MapView;
-				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				PRODUCT_NAME = MapView;
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_INSTALL_OBJC_HEADER = NO;
@@ -437,7 +438,7 @@
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu17 gnu++20";
 				PRODUCT_BUNDLE_IDENTIFIER = net.devswift.MapView;
-				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				PRODUCT_NAME = MapView;
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_INSTALL_OBJC_HEADER = NO;
