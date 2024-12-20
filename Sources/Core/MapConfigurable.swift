@@ -41,7 +41,7 @@ public struct WMSConfig: MapConfigurable {
     public let format: String
     public let parameters: [String : Any]
     
-    public init(baseUrl: String, version: String = "1.3.0", requestType: String, format: String = "image/png", minZoom: Int = 1, maxZoom: Int = 19, initialZoom: Int = 4, tileSize: Double = 256.0, corner: MapExtent.Corner = .topLeft, parameters: [String:Any] = [:]) {
+    public init(baseUrl: String, version: String = "1.3.0", requestType: String, format: String = "image/png", minZoom: Int = 6, maxZoom: Int = 19, initialZoom: Int = 6, tileSize: Double = 256.0, corner: MapExtent.Corner = .topLeft, parameters: [String:Any] = [:]) {
         self.baseUrl = baseUrl
         self.minZoom = minZoom
         self.maxZoom = maxZoom
@@ -68,7 +68,7 @@ public struct TileMapServiceConfig: MapConfigurable {
     // WMTS일 경우 corner 값 topLeft.
     // WMTS의 경우 좌상단이 0,0이고 TMS의 경우 좌하단이 0,0
     // VWorld는 tms일 때, 좌상단을 bottomLeft로, OpenStreetMap은 tms일 때도 좌상단을 topLeft로 하네?
-    public init(type: MapServiceType, baseUrl: String, initialZoom: Int, layer: TileMapServiceLayer, parameterType: TileMapServiceParameterType, corner: MapExtent.Corner = .topLeft, tileSize: Double = 256.0, apiKey: String? = nil) {
+    public init(type: MapServiceType, baseUrl: String, initialZoom: Int, layer: TileMapServiceLayer, parameterType: TileMapServiceParameterType = .z_x_y, corner: MapExtent.Corner = .topLeft, tileSize: Double = 256.0, apiKey: String? = nil) {
         self.type = type
         self.baseUrl = baseUrl
         self.initialZoom = initialZoom
