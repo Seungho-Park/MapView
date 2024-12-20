@@ -5,7 +5,7 @@
 <tr align="center">
 <td>VWorld</td>
 <td>VWorld</td>
-<td>OpenStreetMap</td>
+<td>leaflet</td>
 </tr>
 <tr style="border-bottom: hidden;">
 <td><img src="/Documentation/Video.gif" style="padding:0; margin:0;" width="200px" height="434px"/></td>
