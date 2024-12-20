@@ -1,5 +1,5 @@
 # MapView
-![platform](https://img.shields.io/badge/Platforms-iOS%2014%2B-Green?style=flat-flat)
+![platform](https://img.shields.io/badge/Platforms-iOS%2014%2B_macOS%2010.15%2B-Green?style=flat-flat)
 [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
 [![SwiftPM](https://img.shields.io/badge/SPM-compatible-DE5C43.svg?style=flat)](https://swift.org/package-manager/)
 ## Video
