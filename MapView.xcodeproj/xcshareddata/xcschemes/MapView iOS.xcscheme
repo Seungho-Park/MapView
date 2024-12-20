@@ -16,7 +16,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "614850322D1097030013DC06"
-               BuildableName = "MapView_iOS.framework"
+               BuildableName = "MapView.framework"
                BlueprintName = "MapView iOS"
                ReferencedContainer = "container:MapView.xcodeproj">
             </BuildableReference>
@@ -53,7 +53,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "614850322D1097030013DC06"
-            BuildableName = "MapView_iOS.framework"
+            BuildableName = "MapView.framework"
             BlueprintName = "MapView iOS"
             ReferencedContainer = "container:MapView.xcodeproj">
          </BuildableReference>
