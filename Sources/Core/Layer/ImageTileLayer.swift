@@ -50,14 +50,8 @@ public class ImageTileLayer: CATiledLayer, TileLayer {
         
         ctx.saveGState()
         
-//        #if !os(macOS)
         ctx.translateBy(x: layerRect.minX, y: layerRect.maxY)
         ctx.scaleBy(x: 1, y: -1)
-//        #else
-//        ctx.translateBy(x: layerRect.minX, y: layerRect.minY)
-//        ctx.scaleBy(x: 1, y: 1)
-//        #endif
-        
         
         ctx.setFillColor(CGColor(red: 52/255, green: 58/255, blue: 64/255, alpha: 1))
         ctx.fill([ctx.boundingBoxOfClipPath])
@@ -67,21 +61,12 @@ public class ImageTileLayer: CATiledLayer, TileLayer {
         for i in 0..<renderingTiles.count {
             let (tile, rect) = renderingTiles[i]
             if let tile = tile {
-//                #if !os(macOS)
                 let rect = CGRect(
                     x: round(rect.origin.x) - 0.5,
                     y: round(layerRect.height - rect.origin.y - rect.height) - 0.5,
                     width: rect.width + 0.5,
                     height: rect.height + 0.5
                 )
-//                #else
-//                let rect = CGRect(
-//                    x: rect.origin.x,
-//                    y: rect.origin.y,
-//                    width: rect.width,
-//                    height: rect.height
-//                )
-//                #endif
                 
                 ctx.draw(tile, in: rect)
             }

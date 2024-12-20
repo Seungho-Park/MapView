@@ -32,7 +32,7 @@ public final class ImageTile: Tile {
         }
         
         URLSession.shared.dataTask(with: url) { data, response, error in
-            if let error = error {
+            if let _ = error {
                 self.tileState = .error
                 self.tileData = nil
                 completion(false)

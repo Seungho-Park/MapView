@@ -55,8 +55,6 @@ open class MapView: MapPlatformView {
         self.contentMode = .redraw
         #elseif canImport(AppKit)
         self.wantsLayer = true
-        self.layer = CALayer()
-        self.layer?.delegate = self
         #endif
     }
     
@@ -67,16 +65,12 @@ open class MapView: MapPlatformView {
     private func commit() {
         mapLayer.isOpaque = false
         
-        invalidate()
+        #if !os(macOS)
+        self.layer.addSublayer(mapLayer)
+        #endif
     }
     
-    #if canImport(UIKit)
-    open override func draw(_ layer: CALayer, in ctx: CGContext) {
-        render(layer, context: ctx)
-    }
-    #endif
-    
-    private func render(_ layer: CALayer?, context: CGContext) {
+    internal func render(_ layer: CALayer?, context: CGContext) {
         guard let layer else { return }
         context.saveGState()
         switch mapState {
@@ -165,7 +159,7 @@ open class MapView: MapPlatformView {
     }
     
     private func getScreenExtent(size: CGSize)-> MapExtent {
-        let newSize = isAvailableRotate ? CGSize(width: sqrt(size.width * size.width + size.height * size.height), height: sqrt(size.width * size.width + size.height * size.height)) : size
+        let _ = isAvailableRotate ? CGSize(width: sqrt(size.width * size.width + size.height * size.height), height: sqrt(size.width * size.width + size.height * size.height)) : size
         
         let x = resolution * size.width / 2
         let y = resolution * size.height / 2
@@ -215,17 +209,17 @@ open class MapView: MapPlatformView {
 // MARK: - Touch Event
 internal extension MapView {
     // MARK: - Handle Methods
-    internal func calculateDistance(between point1: CGPoint, and point2: CGPoint) -> Double {
+    func calculateDistance(between point1: CGPoint, and point2: CGPoint) -> Double {
         let dx = point1.x - point2.x
         let dy = point1.y - point2.y
         return sqrt(dx * dx + dy * dy)
     }
     
-    internal func isMoveMapAction(from point1: CGPoint, to point2: CGPoint, threshold: CGFloat = 5) -> Bool {
+    func isMoveMapAction(from point1: CGPoint, to point2: CGPoint, threshold: CGFloat = 5) -> Bool {
         return calculateDistance(between: point1, and: point2) > threshold
     }
     
-    internal func handleMoveMap(from startPoint: CGPoint, to endPoint: CGPoint) {
+    func handleMoveMap(from startPoint: CGPoint, to endPoint: CGPoint) {
         let deltaX = endPoint.x - startPoint.x
         
         #if !os(macOS)
@@ -243,7 +237,7 @@ internal extension MapView {
         invalidate()
     }
     
-    internal func handleZoom(with scaleRate: Double) {
+    func handleZoom(with scaleRate: Double) {
         if scaleRate > 1 {
             zoomIn()
         } else if scaleRate < 1 {
@@ -251,21 +245,6 @@ internal extension MapView {
         }
     }
 }
-
-#if canImport(AppKit)
-extension MapView: CALayerDelegate {
-    open override func makeBackingLayer() -> CALayer {
-        let layer = CALayer()
-        layer.needsDisplayOnBoundsChange = true
-        layer.delegate = self
-        return layer
-    }
-    
-    public func draw(_ layer: CALayer, in ctx: CGContext) {
-        render(layer, context: ctx)
-    }
-}
-#endif
 
 extension MapView: TileLayerDelegate {
     public func refreshLayer() {

@@ -11,9 +11,20 @@ import AppKit
 #endif
 
 #if os(macOS)
-extension MapView {
+extension MapView: CALayerDelegate {
     open override var isFlipped: Bool {
         return true
+    }
+    
+    open override func makeBackingLayer() -> CALayer {
+        let layer = CALayer()
+        layer.needsDisplayOnBoundsChange = true
+        layer.delegate = self
+        return layer
+    }
+    
+    public func draw(_ layer: CALayer, in ctx: CGContext) {
+        render(layer, context: ctx)
     }
     
     open override func mouseDown(with event: NSEvent) {

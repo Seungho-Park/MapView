@@ -12,6 +12,10 @@ import UIKit
 
 #if !os(macOS)
 extension MapView {
+    open override func draw(_ layer: CALayer, in ctx: CGContext) {
+        self.render(layer, context: ctx)
+    }
+    
     open override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard let allTouches = event?.allTouches, (1...2).contains(allTouches.count) else { return }
         let touchPoints = allTouches.map { $0.location(in: self) }
