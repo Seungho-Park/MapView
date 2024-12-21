@@ -4,4 +4,7 @@
    <FileRef
       location = "group:MapView.xcodeproj">
    </FileRef>
+   <FileRef
+      location = "group:Example/ExampleMapView-iOS/ExampleMapView-iOS.xcodeproj">
+   </FileRef>
 </Workspace>
