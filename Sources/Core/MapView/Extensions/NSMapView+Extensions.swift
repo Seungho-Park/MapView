@@ -59,6 +59,18 @@ extension MapView: CALayerDelegate {
         mapState = .none
     }
     
+    open override func scrollWheel(with event: NSEvent) {
+        switch event.phase {
+        case .began:
+            mapState = .zoom(startDistance: event.deltaY, currentDistance: event.scrollingDeltaY)
+        default:
+            if case .zoom = mapState {
+                handleZoom(with: event.scrollingDeltaY)
+                mapState = .none
+            }
+        }
+    }
+    
     open override func mouseExited(with event: NSEvent) {
         
     }
