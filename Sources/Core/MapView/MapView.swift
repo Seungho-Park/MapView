@@ -25,16 +25,17 @@ public typealias MapPlatformView = NSView
 
 open class MapView: MapPlatformView {
     private var mapLayer: (any TileLayer)!
-    internal var mapState: MapState = .none
     private let lonlatToPixelTransform = Transform()
     private let pixelToLonlatTransform = Transform()
     
     private let zoomFactor = 2.0
     private var resolution: Double = .zero
-    private var centerCoord: Coordinate = .init(latitude: 4519089.62003392, longitude: 14134945.162872873)
-    private var zoom: Int = 7
-    private var angle: Double = 0
-    private var isAvailableRotate: Bool = false
+    
+    internal var mapState: MapState = .none
+    internal var centerCoord: Coordinate = .init(latitude: 4519089.62003392, longitude: 14134945.162872873)
+    internal var zoom: Int = 7
+    internal var angle: Double = 0
+    internal var isAvailableRotate: Bool = false
     
     public convenience init(map: any SourceTile) {
         self.init(frame: .zero)
@@ -143,7 +144,7 @@ open class MapView: MapPlatformView {
         invalidate()
     }
     
-    private func apply() {
+    internal func apply() {
         let extent = mapLayer.source.extent
         let size = max(extent.width, extent.height)
         let maxResolution = size / mapLayer.source.config.tileSize / pow(2, 0)
@@ -151,7 +152,7 @@ open class MapView: MapPlatformView {
         resolution = createSnapToPower(delta:Int(zoom - mapLayer.source.minZoom), resolution: maxResolution / pow(zoomFactor, Double(mapLayer.source.minZoom)), direction: 0)
     }
     
-    private func renderFrame() {
+    internal func renderFrame() {
         mapLayer.prepareFrame(screenSize: self.bounds.size, center: centerCoord, resolution: resolution, angle: angle, extent: getScreenExtent(size: self.bounds.size))
         
         lonlatToPixelTransform.composite(self.bounds.size.width / 2, self.bounds.size.height / 2, -centerCoord.longitude, -centerCoord.latitude, 1 / resolution, -1 / resolution, angle)

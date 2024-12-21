@@ -42,7 +42,17 @@ extension MapView {
             } else {
                 let newPoint = touchPoints[0]
                 if isMoveMapAction(from: currentPoint, to: newPoint) {
-                    mapState = .move(startPoint: startPoint, currentPoint: newPoint)
+                    let dx = newPoint.x - startPoint.x
+                    let dy = newPoint.y - startPoint.y
+
+                    var centerXY = worldToPixel(coord: centerCoord)
+                    centerXY.x -= dx
+                    centerXY.y -= dy
+                    centerCoord = pixelToWorld(point: centerXY)
+
+                    mapState = .move(startPoint: newPoint, currentPoint: newPoint)
+
+                    renderFrame()
                     invalidate()
                 }
             }

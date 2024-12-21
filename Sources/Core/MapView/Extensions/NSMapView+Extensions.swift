@@ -35,10 +35,20 @@ extension MapView: CALayerDelegate {
         switch mapState {
         case .none, .zoom:
             break
-        case .move(let startPoint, let currentPoint):
+        case .move(let prevPoint, let currentPoint):
             let newPoint = event.locationInWindow
             if isMoveMapAction(from: currentPoint, to: newPoint) {
-                mapState = .move(startPoint: startPoint, currentPoint: newPoint)
+                let dx = newPoint.x - prevPoint.x
+                let dy = prevPoint.y - newPoint.y
+                
+                var centerXY = worldToPixel(coord: centerCoord)
+                centerXY.x -= dx
+                centerXY.y -= dy
+                centerCoord = pixelToWorld(point: centerXY)
+                
+                mapState = .move(startPoint: newPoint, currentPoint: newPoint)
+                
+                renderFrame()
                 invalidate()
             }
         }
