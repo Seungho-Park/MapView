@@ -14,7 +14,7 @@ import AppKit
 internal enum MapState {
     case none
     case move(startPoint: CGPoint, currentPoint: CGPoint)
-    case zoom(startDistance: Double, currentDistance: Double?)
+    case pinchZoom(center: CGPoint, startZoom: Double, distance: Double, scale: Double)
 }
 
 #if canImport(UIKit)
@@ -33,7 +33,7 @@ open class MapView: MapPlatformView {
     
     internal var mapState: MapState = .none
     internal var centerCoord: Coordinate = .init(latitude: 4519089.62003392, longitude: 14134945.162872873)
-    internal var zoom: Int = 7
+    internal var zoom: Double = 7
     internal var angle: Double = 0
     internal var isAvailableRotate: Bool = false
     
@@ -41,7 +41,7 @@ open class MapView: MapPlatformView {
         self.init(frame: .zero)
         
         mapLayer = ImageTileLayer(source: map)
-        self.zoom = map.config.initialZoom
+        self.zoom = Double(map.config.initialZoom)
         mapLayer.mapDelegate = self
         
         commit()
@@ -72,7 +72,7 @@ open class MapView: MapPlatformView {
     }
     
     internal func render(_ layer: CALayer?, context: CGContext) {
-        guard let layer else { return }
+//        guard let layer else { return }
         context.saveGState()
         switch mapState {
         case .move(let downPoint, let movePoint):
@@ -85,13 +85,10 @@ open class MapView: MapPlatformView {
             #endif
             
             context.translateBy(x: moveX, y: moveY)
-        case .zoom(let startDistance, let moveDistance):
-            guard let moveDistance = moveDistance else { break }
-            let scaleRate = max(0.5, min(moveDistance / startDistance, 2.0))
-            
-            context.translateBy(x: layer.frame.midX, y: layer.frame.midY)
-            context.scaleBy(x: scaleRate, y: scaleRate)
-            context.translateBy(x: -layer.frame.midX, y: -layer.frame.midY)
+        case .pinchZoom(let center, _, _, let scale):
+            context.translateBy(x: center.x, y: center.y)
+            context.scaleBy(x: scale, y: scale)
+            context.translateBy(x: -center.x, y: -center.y)
         case .none:
             apply()
             renderFrame()
@@ -124,7 +121,7 @@ open class MapView: MapPlatformView {
     
     func zoomIn() {
         let newZoom = zoom + 1
-        if newZoom <= mapLayer.source.maxZoom {
+        if Int(newZoom) <= mapLayer.source.maxZoom {
             zoom = newZoom
             apply()
             renderFrame()
@@ -135,7 +132,7 @@ open class MapView: MapPlatformView {
     
     func zoomOut() {
         let newZoom = zoom - 1
-        if newZoom >= mapLayer.source.minZoom {
+        if Int(newZoom) >= mapLayer.source.minZoom {
             zoom = newZoom
             apply()
             renderFrame()
@@ -149,13 +146,14 @@ open class MapView: MapPlatformView {
         let size = max(extent.width, extent.height)
         let maxResolution = size / mapLayer.source.config.tileSize / pow(2, 0)
         
-        resolution = createSnapToPower(delta:Int(zoom - mapLayer.source.minZoom), resolution: maxResolution / pow(zoomFactor, Double(mapLayer.source.minZoom)), direction: 0)
+        resolution = maxResolution / pow(zoomFactor, zoom)//createSnapToPower(delta:Int(zoom - mapLayer.source.minZoom), resolution: maxResolution / pow(zoomFactor, Double(mapLayer.source.minZoom)), direction: 0)
     }
     
-    internal func renderFrame() {
-        mapLayer.prepareFrame(screenSize: self.bounds.size, center: centerCoord, resolution: resolution, angle: angle, extent: getScreenExtent(size: self.bounds.size))
+    internal func renderFrame(scale: Double = 1) {
+        let screenSize: CGSize = .init(width: self.bounds.width / scale, height: self.bounds.height / scale)
+        mapLayer.prepareFrame(screenSize: screenSize, center: centerCoord, resolution: resolution, angle: angle, extent: getScreenExtent(size: screenSize))
         
-        lonlatToPixelTransform.composite(self.bounds.size.width / 2, self.bounds.size.height / 2, -centerCoord.longitude, -centerCoord.latitude, 1 / resolution, -1 / resolution, angle)
+        lonlatToPixelTransform.composite(screenSize.width / 2, screenSize.height / 2, -centerCoord.longitude, -centerCoord.latitude, 1 / resolution, -1 / resolution, angle)
         pixelToLonlatTransform.inverse(transform: lonlatToPixelTransform)
     }
     
@@ -238,12 +236,16 @@ internal extension MapView {
         invalidate()
     }
     
-    func handleZoom(with scaleRate: Double) {
-        if scaleRate > 1 {
-            zoomIn()
-        } else if scaleRate < 1 {
-            zoomOut()
+    func handleZoom(zoom: Double, scale: Double) {
+        let newZoom = zoom + log2(scale)
+        
+        if newZoom >= Double(mapLayer.source.minZoom) && newZoom <= Double(mapLayer.source.maxZoom) {
+            self.zoom = round(newZoom)
         }
+        
+        apply()
+        renderFrame(scale: scale)
+        invalidate()
     }
 }
 

@@ -33,7 +33,7 @@ extension MapView: CALayerDelegate {
     
     open override func mouseDragged(with event: NSEvent) {
         switch mapState {
-        case .none, .zoom:
+        case .none, .pinchZoom:
             break
         case .move(let prevPoint, let currentPoint):
             let newPoint = event.locationInWindow
@@ -56,7 +56,7 @@ extension MapView: CALayerDelegate {
     
     open override func mouseUp(with event: NSEvent) {
         switch mapState {
-        case .none, .zoom:
+        case .none, .pinchZoom:
             break
         case .move(let startPoint, _):
             let endPoint = event.locationInWindow
@@ -70,15 +70,15 @@ extension MapView: CALayerDelegate {
     }
     
     open override func scrollWheel(with event: NSEvent) {
-        switch event.phase {
-        case .began:
-            mapState = .zoom(startDistance: event.deltaY, currentDistance: event.scrollingDeltaY)
-        default:
-            if case .zoom = mapState {
-                handleZoom(with: event.scrollingDeltaY)
-                mapState = .none
-            }
-        }
+//        switch event.phase {
+//        case .began:
+//            mapState = .zoom(startDistance: event.deltaY, currentDistance: event.scrollingDeltaY)
+//        default:
+//            if case .zoom = mapState {
+//                handleZoom(with: event.scrollingDeltaY)
+//                mapState = .none
+//            }
+//        }
     }
     
     open override func mouseExited(with event: NSEvent) {
