@@ -15,6 +15,7 @@ internal enum MapState {
     case none
     case move(startPoint: CGPoint, currentPoint: CGPoint)
     case pinchZoom(center: CGPoint, startZoom: Double, distance: Double, scale: Double)
+    case wheelZoom(controlPoint: Coordinate)
 }
 
 #if canImport(UIKit)
@@ -72,7 +73,7 @@ open class MapView: MapPlatformView {
     }
     
     internal func render(_ layer: CALayer?, context: CGContext) {
-//        guard let layer else { return }
+        guard let layer else { return }
         context.saveGState()
         switch mapState {
         case .move(let downPoint, let movePoint):
@@ -89,13 +90,17 @@ open class MapView: MapPlatformView {
             context.translateBy(x: center.x, y: center.y)
             context.scaleBy(x: scale, y: scale)
             context.translateBy(x: -center.x, y: -center.y)
+        case .wheelZoom:
+            break
+//            context.translateBy(x: center.x, y: center.y)
+//            context.translateBy(x: -center.x, y: -center.y)
         case .none:
             apply()
             renderFrame()
         }
         
-        mapLayer.render(in: context)
         context.restoreGState()
+        mapLayer.render(in: context)
     }
     
     func worldToPixel(coord: Coordinate)-> CGPoint {
@@ -146,7 +151,7 @@ open class MapView: MapPlatformView {
         let size = max(extent.width, extent.height)
         let maxResolution = size / mapLayer.source.config.tileSize / pow(2, 0)
         
-        resolution = maxResolution / pow(zoomFactor, zoom)//createSnapToPower(delta:Int(zoom - mapLayer.source.minZoom), resolution: maxResolution / pow(zoomFactor, Double(mapLayer.source.minZoom)), direction: 0)
+        resolution = createSnapToPower(delta:Int(zoom - Double(mapLayer.source.minZoom)), resolution: maxResolution / pow(zoomFactor, Double(mapLayer.source.minZoom)), direction: 0)
     }
     
     internal func renderFrame(scale: Double = 1) {
@@ -236,11 +241,14 @@ internal extension MapView {
         invalidate()
     }
     
-    func handleZoom(zoom: Double, scale: Double) {
+    func handleZoom(zoom: Double, scale: Double, distance: Double) {
         let newZoom = zoom + log2(scale)
-        
+        var scale = scale
         if newZoom >= Double(mapLayer.source.minZoom) && newZoom <= Double(mapLayer.source.maxZoom) {
-            self.zoom = round(newZoom)
+            self.zoom = newZoom
+        } else {
+            mapState = .none
+            scale = 1
         }
         
         apply()

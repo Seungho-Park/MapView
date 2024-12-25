@@ -7,6 +7,20 @@
 import Foundation
 
 internal final class MapServiceRequester: ServiceRequester {
+    private let lock = NSLock()
+    private var _tileKeyList: [String] = []
+    private var tileKeyList: [String] {
+        get {
+            lock.lock()
+            defer { lock.unlock() }
+            return _tileKeyList
+        }
+        set {
+            lock.lock()
+            defer { lock.unlock() }
+            _tileKeyList = newValue
+        }
+    }
     private var task: Task<Void, Never>?
     public var requesterPool: any ServiceRequesterPool
     public var isActive: Bool
@@ -17,8 +31,7 @@ internal final class MapServiceRequester: ServiceRequester {
     }
     
     public func start(completion: @escaping CompletionHandler) {
-        task = Task {
-            var tileKeyList: [String] = []
+        task = Task(priority: .utility) {
             while self.isActive == true {
                 if let tile = self.requesterPool.dequeue() {
                     let isLoaded = await tile.load()

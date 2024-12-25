@@ -33,7 +33,7 @@ extension MapView: CALayerDelegate {
     
     open override func mouseDragged(with event: NSEvent) {
         switch mapState {
-        case .none, .pinchZoom:
+        case .none, .pinchZoom, .wheelZoom:
             break
         case .move(let prevPoint, let currentPoint):
             let newPoint = event.locationInWindow
@@ -56,7 +56,7 @@ extension MapView: CALayerDelegate {
     
     open override func mouseUp(with event: NSEvent) {
         switch mapState {
-        case .none, .pinchZoom:
+        case .none, .pinchZoom, .wheelZoom:
             break
         case .move(let startPoint, _):
             let endPoint = event.locationInWindow
@@ -70,15 +70,45 @@ extension MapView: CALayerDelegate {
     }
     
     open override func scrollWheel(with event: NSEvent) {
-//        switch event.phase {
-//        case .began:
-//            mapState = .zoom(startDistance: event.deltaY, currentDistance: event.scrollingDeltaY)
-//        default:
-//            if case .zoom = mapState {
-//                handleZoom(with: event.scrollingDeltaY)
-//                mapState = .none
-//            }
-//        }
+        switch event.phase {
+        case .began:
+            // 1) 뷰 내부 좌표로 변환 후, 월드 좌표 저장
+            let localPt = self.convert(event.locationInWindow, from: nil)
+            let worldCoord = pixelToWorld(point: localPt)
+            mapState = .wheelZoom(controlPoint: worldCoord)
+            
+        case .changed:
+            if case .wheelZoom(let coord) = mapState {
+                if event.deltaY > 0 {
+                    zoomIn()
+                } else if event.deltaY < 0 {
+                    zoomOut()
+                }
+                
+                apply()
+                renderFrame()
+                
+                let controlPoint = worldToPixel(coord: coord) // (뷰 좌표)
+                
+                let localPt = self.convert(event.locationInWindow, from: nil)
+                
+                let dx = localPt.x - controlPoint.x
+                let dy = localPt.y - controlPoint.y
+                
+                var centerXY = worldToPixel(coord: centerCoord)
+                centerXY.x -= dx
+                centerXY.y -= dy
+                centerCoord = pixelToWorld(point: centerXY)
+                
+                mapState = .wheelZoom(controlPoint: coord)
+                apply()
+                renderFrame()
+                invalidate()
+            }
+            
+        default:
+            mapState = .none
+        }
     }
     
     open override func mouseExited(with event: NSEvent) {
