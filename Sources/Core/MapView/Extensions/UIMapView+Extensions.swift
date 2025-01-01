@@ -18,20 +18,19 @@ extension MapView {
     
     open override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard let allTouches = event?.allTouches, (1...2).contains(allTouches.count) else { return }
-        let touchPoints = allTouches.map { $0.location(in: self) }
+        let touchPoints = allTouches.map { self.convert($0.location(in: self), from: nil) }
         
         if allTouches.count == 1 {
             mapState = .move(startPoint: touchPoints[0], currentPoint: touchPoints[0])
         } else {
             let distance = calculateDistance(between: touchPoints[0], and: touchPoints[1])
-            let centerXY: CGPoint = .init(x: (touchPoints[0].x + touchPoints[1].x) / 2, y: (touchPoints[0].y + touchPoints[1].y) / 2)
-            mapState = .pinchZoom(center: centerXY, startZoom: zoom, distance: distance, scale: 1)
+            mapState = .pinchZoom(startDistance: distance, currentDistance: nil)
         }
     }
     
     open override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard let allTouches = event?.allTouches, (1...2).contains(allTouches.count) else { return }
-        let touchPoints = allTouches.map { $0.location(in: self) }
+        let touchPoints = allTouches.map { self.convert($0.location(in: self), from: nil) }
         
         switch mapState {
         case .none, .wheelZoom:
@@ -39,9 +38,9 @@ extension MapView {
             break
         case .move(let startPoint, let currentPoint):
             if allTouches.count > 1 {
+                let touchPoints = [touchPoints[0], touchPoints[1]].map { self.convert($0, from: nil) }
                 let distance = calculateDistance(between: touchPoints[0], and: touchPoints[1])
-                let centerXY: CGPoint = .init(x: (touchPoints[0].x + touchPoints[1].x) / 2, y: (touchPoints[0].y + touchPoints[1].y) / 2)
-                mapState = .pinchZoom(center: centerXY, startZoom: zoom, distance: distance, scale: 1)
+                mapState = .pinchZoom(startDistance: distance, currentDistance: nil)
             } else {
                 let newPoint = touchPoints[0]
                 if isMoveMapAction(from: currentPoint, to: newPoint) {
@@ -59,14 +58,11 @@ extension MapView {
                     invalidate()
                 }
             }
-        case .pinchZoom(let center, let startZoom, let distance, let scale):
+        case .pinchZoom(let startDistance, _):
             guard touchPoints.count == 2 else { break }
-            
-            let tempPt: CGPoint = .init(x: (touchPoints[0].x + touchPoints[1].x) / 2, y: (touchPoints[0].y + touchPoints[1].y) / 2)
-            
-            let newDistance = calculateDistance(between: touchPoints[0], and: touchPoints[1])
-            mapState = .pinchZoom(center: tempPt, startZoom: startZoom, distance: distance, scale: newDistance / distance)
-            handleZoom(zoom: startZoom, scale: newDistance / distance, distance: newDistance - distance)
+            let distance = calculateDistance(between: touchPoints[0], and: touchPoints[1])
+            mapState = .pinchZoom(startDistance: startDistance, currentDistance: distance)
+            invalidate()
         }
     }
     
@@ -84,8 +80,12 @@ extension MapView {
             if isMoveMapAction(from: startPoint, to: endPoint) {
                 handleMoveMap(from: startPoint, to: endPoint)
             }
-        case .pinchZoom(let center, let startZoom, _, let scale):
-            handleZoom(zoom: startZoom, scale: scale, distance: 0)
+            
+        case .pinchZoom(let startDistance, let currentDistance):
+            guard let currentDistance = currentDistance else { break }
+            
+            let scaleRate = currentDistance / startDistance
+            handleZoom(with: scaleRate)
         }
         
         mapState = .none

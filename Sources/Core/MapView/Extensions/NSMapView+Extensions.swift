@@ -69,6 +69,23 @@ extension MapView: CALayerDelegate {
         mapState = .none
     }
     
+    open override func magnify(with event: NSEvent) {
+        switch self.mapState {
+        case .pinchZoom(let startDistance, let currentDistance):
+            if event.phase == .ended {
+                let scaleRate = currentDistance! / startDistance
+                handleZoom(with: scaleRate)
+                mapState = .none
+            } else {
+                mapState = .pinchZoom(startDistance: startDistance, currentDistance: (currentDistance ?? 1.0) + event.magnification)
+            }
+        default :
+            mapState = .pinchZoom(startDistance: 1.0 + event.magnification, currentDistance: 1.0 + event.magnification)
+        }
+        
+        invalidate()
+    }
+    
     open override func scrollWheel(with event: NSEvent) {
         switch event.phase {
         case .began:
