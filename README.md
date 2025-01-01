@@ -26,7 +26,7 @@
 Add dependency:
 
 ```Swift
-.package(url: "https://github.com/Seungho-Park/MapView.git", from: "0.0.1")
+.package(url: "https://github.com/Seungho-Park/MapView.git", from: "0.0.4")
 ```
 
 ### Carthage
