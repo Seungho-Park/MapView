@@ -14,7 +14,7 @@ import AppKit
 internal enum MapState {
     case none
     case move(startPoint: CGPoint, currentPoint: CGPoint)
-    case pinchZoom(center: CGPoint, startZoom: Double, distance: Double, scale: Double)
+    case pinchZoom(startDistance: Double, currentDistance: Double?)
     case wheelZoom(controlPoint: Coordinate)
 }
 
@@ -86,21 +86,22 @@ open class MapView: MapPlatformView {
             #endif
             
             context.translateBy(x: moveX, y: moveY)
-        case .pinchZoom(let center, _, _, let scale):
-            context.translateBy(x: center.x, y: center.y)
-            context.scaleBy(x: scale, y: scale)
-            context.translateBy(x: -center.x, y: -center.y)
+        case .pinchZoom(let startDistance, let moveDistance):
+            guard let moveDistance = moveDistance else { break }
+            let scaleRate = max(0.5, min(moveDistance / startDistance, 2.0))
+                        
+            context.translateBy(x: layer.frame.midX, y: layer.frame.midY)
+            context.scaleBy(x: scaleRate, y: scaleRate)
+            context.translateBy(x: -layer.frame.midX, y: -layer.frame.midY)
         case .wheelZoom:
             break
-//            context.translateBy(x: center.x, y: center.y)
-//            context.translateBy(x: -center.x, y: -center.y)
         case .none:
             apply()
             renderFrame()
         }
         
-        context.restoreGState()
         mapLayer.render(in: context)
+        context.restoreGState()
     }
     
     func worldToPixel(coord: Coordinate)-> CGPoint {
@@ -241,19 +242,12 @@ internal extension MapView {
         invalidate()
     }
     
-    func handleZoom(zoom: Double, scale: Double, distance: Double) {
-        let newZoom = zoom + log2(scale)
-        var scale = scale
-        if newZoom >= Double(mapLayer.source.minZoom) && newZoom <= Double(mapLayer.source.maxZoom) {
-            self.zoom = newZoom
-        } else {
-            mapState = .none
-            scale = 1
+    func handleZoom(with scaleRate: Double) {
+        if scaleRate > 1 {
+            zoomIn()
+        } else if scaleRate < 1 {
+            zoomOut()
         }
-        
-        apply()
-        renderFrame(scale: scale)
-        invalidate()
     }
 }
 
