@@ -6,11 +6,11 @@
 //  Copyright © 2024 MapView. All rights reserved.
 //
 
+#if os(macOS)
 #if canImport(AppKit)
 import AppKit
 #endif
 
-#if os(macOS)
 extension MapView: CALayerDelegate {
     open override var isFlipped: Bool {
         return true
@@ -72,7 +72,6 @@ extension MapView: CALayerDelegate {
     open override func scrollWheel(with event: NSEvent) {
         switch event.phase {
         case .began:
-            // 1) 뷰 내부 좌표로 변환 후, 월드 좌표 저장
             let localPt = self.convert(event.locationInWindow, from: nil)
             let worldCoord = pixelToWorld(point: localPt)
             mapState = .wheelZoom(controlPoint: worldCoord)
@@ -88,7 +87,7 @@ extension MapView: CALayerDelegate {
                 apply()
                 renderFrame()
                 
-                let controlPoint = worldToPixel(coord: coord) // (뷰 좌표)
+                let controlPoint = worldToPixel(coord: coord)
                 
                 let localPt = self.convert(event.locationInWindow, from: nil)
                 

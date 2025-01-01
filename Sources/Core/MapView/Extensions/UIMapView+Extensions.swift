@@ -6,11 +6,11 @@
 //  Copyright © 2024 MapView. All rights reserved.
 //
 
+#if !os(macOS)
 #if canImport(UIKit)
 import UIKit
 #endif
 
-#if !os(macOS)
 extension MapView {
     open override func draw(_ layer: CALayer, in ctx: CGContext) {
         self.render(layer, context: ctx)

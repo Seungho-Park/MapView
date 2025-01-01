@@ -11,7 +11,19 @@ import CoreImage
 
 public class ImageTileLayer: CATiledLayer, TileLayer {
     private let lock = NSLock()
-    private var renderingTiles: [(CGImage?, CGRect)] = []
+    private var _renderingTiles: [(CGImage?, CGRect)] = []
+    private var renderingTiles: [(CGImage?, CGRect)] {
+        get {
+            lock.lock()
+            defer { lock.unlock() }
+            return _renderingTiles
+        }
+        set {
+            lock.lock()
+            defer { lock.unlock() }
+            _renderingTiles = newValue
+        }
+    }
     private var requesters: [any ServiceRequester] = []
     private var resolution: Double = 0
     
@@ -118,9 +130,6 @@ public class ImageTileLayer: CATiledLayer, TileLayer {
     
     private func drawTiles(_ tiles: [ImageTile], overSampling: Double = 1.0) {
         guard let screenExtent else { return }
-        lock.lock()
-        defer { lock.unlock() }
-        
         let options: [NSString: Any] = [
             kCGImageSourceThumbnailMaxPixelSize: source.config.tileSize,
             kCGImageSourceCreateThumbnailFromImageAlways: true
