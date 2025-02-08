@@ -87,6 +87,6 @@ public extension TileLayer {
         let deltaX = center.longitude - Double(tileCoord.x)
         let deltaY = center.latitude - Double(tileCoord.y)
         
-        return 65536 * log(tileResolution) + sqrt(pow(deltaX, 2) + pow(deltaY, 2)) / tileResolution
+        return (source.config.tileSize * source.config.tileSize) * log(tileResolution) + sqrt(pow(deltaX, 2) + pow(deltaY, 2)) / tileResolution
     }
 }
